@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Chandni!</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
             --gold: #d4af37;
@@ -22,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* Header Section */
         .header {
             padding: 50px 20px;
             background: linear-gradient(45deg, #000, #222);
@@ -36,7 +36,6 @@
             margin-bottom: 10px;
         }
 
-        /* Balloon Section */
         .balloon-zone {
             height: 200px;
             display: flex;
@@ -51,7 +50,6 @@
             background: var(--pink);
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.2s;
             animation: float 3s infinite ease-in-out;
         }
 
@@ -60,9 +58,7 @@
             50% { transform: translateY(-20px); }
         }
 
-        /* Cake Section */
         .cake-container {
-            position: relative;
             margin: 50px auto;
             width: 200px;
             cursor: pointer;
@@ -73,7 +69,6 @@
             height: 150px;
             background: #4e2c2c;
             border-radius: 10px 10px 0 0;
-            position: relative;
             border-top: 10px solid var(--gold);
         }
 
@@ -81,9 +76,9 @@
             width: 10px;
             height: 40px;
             background: white;
-            position: absolute;
-            top: -50px;
-            left: 95px;
+            margin: auto;
+            position: relative;
+            top: -40px;
         }
 
         .flame {
@@ -93,11 +88,10 @@
             border-radius: 50%;
             position: absolute;
             top: -20px;
-            left: -2px;
+            left: -3px;
             box-shadow: 0 0 10px gold;
         }
 
-        /* Messages Section */
         .messages-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -119,7 +113,6 @@
         .shayari {
             font-style: italic;
             color: var(--gold);
-            margin-bottom: 10px;
         }
 
         .footer {
@@ -131,81 +124,91 @@
         .signature {
             color: var(--gold);
             font-weight: bold;
-            margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="header">
-        <h1>Happy Birthday, Chandni! ✨</h1>
-        <p>Wishing you a day as bright as your name.</p>
+<!-- 🎵 BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<div class="header">
+    <h1>Happy Birthday, Chandni! ✨</h1>
+    <p>Wishing you a day as bright as your name.</p>
+</div>
+
+<div class="balloon-zone" id="balloonZone"></div>
+
+<div class="cake-container" onclick="cutCake()">
+    <div class="candle">
+        <div class="flame" id="flame"></div>
     </div>
-
-    <div class="balloon-zone" id="balloonZone">
-        </div>
-
-    <div class="cake-container" onclick="cutCake()">
-        <div class="candle" id="candle"><div class="flame" id="flame"></div></div>
-        <div class="cake">
-            <p style="padding-top: 50px;">LUXURY CAKE<br>🎂<br><small>(Click to Cut)</small></p>
-        </div>
+    <div class="cake">
+        <p style="padding-top:50px;">LUXURY CAKE 🎂<br><small>(Click to Cut)</small></p>
     </div>
+</div>
 
-    <div class="messages-grid">
-        <div class="card"><p class="shayari">"Chandni raat mein taare chamakhte hain,<br>Aapki dosti se hum mahakte hain."</p><p>Happy Birthday!</p></div>
-        <div class="card"><p class="shayari">"Khuda kare aapki har dua qubool ho,<br>Zindagi apki phoolon ki dhool ho."</p><p>Stay Blessed!</p></div>
-        <div class="card"><p>Wishing you 365 days of laughter and joy!</p></div>
-        <div class="card"><p class="shayari">"Phoolon ne amrit ka jaam bheja hai,<br>Suraj ne gagan se salaam bheja hai."</p><p>Enjoy your day!</p></div>
-        <div class="card"><p>To a wonderful friend who deserves the world.</p></div>
-        <div class="card"><p class="shayari">"Har din teri khushiyan dugni ho jaye,<br>Tere gham sare mitti me mil jaye."</p><p>HBD Chandni!</p></div>
-        <div class="card"><p>May your dreams take flight today!</p></div>
-        <div class="card"><p class="shayari">"Zindagi ki rahon mein hamesha muskurate raho,<br>Chandni ki tarah har pal jagmagate raho."</p></div>
-        <div class="card"><p>You are a gem of a person. Keep shining!</p></div>
-        <div class="card"><p class="shayari">"Aap wo phool ho jo har baghiya mein nahi khilta,<br>Aap jaisa dost har kisi ko nahi milta."</p></div>
-        <div class="card"><p>Party hard and eat lots of cake!</p></div>
-        <div class="card"><p>Let's celebrate the amazing person you are!</p></div>
-    </div>
+<div class="messages-grid">
+    <div class="card"><p class="shayari">"Chandni raat mein taare chamakte hain,<br>Aapki muskaan se hum mehakte hain."</p></div>
+    <div class="card"><p class="shayari">"Khuda kare aapki har dua qubool ho,<br>Zindagi phoolon se bhari ho."</p></div>
+    <div class="card"><p>Wishing you 365 days of happiness 💖</p></div>
+    <div class="card"><p class="shayari">"Zindagi ke har mod par khush raho,<br>Chandni ki tarah roshan raho."</p></div>
+</div>
 
-    <div class="footer">
-        <div>With Love & Respect,</div>
-        <div class="signature">Made by Sivasingh🥀</div>
-    </div>
+<div class="footer">
+    With Love & Respect  
+    <div class="signature">Made by Sivasingh 🥀</div>
+</div>
 
-    <script>
-        // Create Balloons
-        const colors = ['#ff69b4', '#ffd700', '#ff4500', '#00ced1', '#9370db'];
-        const zone = document.getElementById('balloonZone');
-        
-        for(let i=0; i<8; i++) {
-            let b = document.createElement('div');
-            b.className = 'balloon';
-            b.style.backgroundColor = colors[i % colors.length];
-            b.onclick = function() {
-                this.style.display = 'none';
-                confetti({ particleCount: 50, spread: 50 });
-            };
-            zone.appendChild(b);
+<script>
+    const music = document.getElementById("bgMusic");
+
+    // 🔊 FORCE PLAY FIX
+    function playMusic(){
+        if(music.paused){
+            music.play().catch(()=>{});
         }
+    }
+    document.addEventListener("click", playMusic);
+    document.addEventListener("touchstart", playMusic);
 
-        // Cake Cutting & Bomb Blast Effect
-        function cutCake() {
-            document.getElementById('flame').style.display = 'none';
-            
-            // Big Bomb Blast / Celebration Effect
-            var duration = 5 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    // Balloons
+    const colors = ['#ff69b4', '#ffd700', '#ff4500', '#00ced1', '#9370db'];
+    const zone = document.getElementById('balloonZone');
 
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-            }, 250);
+    for(let i=0;i<8;i++){
+        let b=document.createElement('div');
+        b.className='balloon';
+        b.style.background=colors[i%colors.length];
+        b.onclick=function(){
+            playMusic();
+            this.style.display='none';
+            confetti({particleCount:50,spread:70});
+        };
+        zone.appendChild(b);
+    }
 
-            alert("🎂 Cake Cut! Let the Celebration Begin, Chandni!");
-        }
-    </script>
+    // Cake Cut
+    function cutCake(){
+        playMusic();
+        document.getElementById('flame').style.display='none';
+
+        let end = Date.now()+4000;
+        let timer = setInterval(()=>{
+            confetti({
+                particleCount:40,
+                spread:360,
+                origin:{x:Math.random(),y:Math.random()}
+            });
+            if(Date.now()>end) clearInterval(timer);
+        },300);
+
+        alert("🎂 Cake Cut! Happy Birthday Chandni!");
+    }
+</script>
+
 </body>
 </html>
