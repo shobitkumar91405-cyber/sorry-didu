@@ -3,159 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nisha Khan 💖 | Friendship Special</title>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<title>Nisha Khan 💖</title>
 
 <style>
-:root{
-  --pink:#ff6fae;
-  --violet:#8b7bff;
-  --dark:#050716;
-  --soft:#ffd6ea;
-}
 body{
   margin:0;
-  font-family:'Poppins',sans-serif;
-  background:radial-gradient(circle at top,#141852,#050716);
-  color:white;
+  font-family:Poppins,sans-serif;
+  background:linear-gradient(135deg,#ff5fa2,#7b6cff);
   text-align:center;
-  overflow-x:hidden;
+  color:white;
 }
 
-/* INTRO SCREEN (REEL STYLE) */
-.intro{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(180deg,#ff6fae,#8b7bff);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-  flex-direction:column;
-  animation:fadeIn 1.2s ease;
-}
-.intro h1{
-  font-size:3rem;
-  color:white;
-  text-shadow:0 0 20px rgba(0,0,0,.4);
-}
-.intro p{
-  font-size:1.2rem;
-}
-.intro button{
-  margin-top:30px;
-  padding:14px 30px;
-  border:none;
-  border-radius:30px;
-  background:#fff;
-  color:#ff4fa3;
-  font-size:1rem;
-  cursor:pointer;
-}
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
+/* MUSIC */
+audio{display:none}
 
 /* HEADER */
-.header{
-  padding:80px 20px 40px;
-}
-.header h2{
+h1{
+  margin-top:40px;
   font-size:3rem;
-  color:var(--pink);
-  text-shadow:0 0 25px rgba(255,111,174,.6);
 }
-.header p{
-  color:#ddd;
-  font-size:1.2rem;
-}
-
-/* FLOATING HEARTS */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:22px;
-  animation:floatUp 6s linear infinite;
-}
-@keyframes floatUp{
-  0%{transform:translateY(0);opacity:1}
-  100%{transform:translateY(-120vh);opacity:0}
-}
-
-/* SECTION TITLE */
-.section-title{
-  margin-top:60px;
-  font-size:2.4rem;
-  color:var(--soft);
-}
+p{opacity:.9}
 
 /* CARD GRID */
-.card-grid{
+.cards{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
   gap:25px;
   padding:40px;
 }
+
+/* CARD */
 .card{
-  background:rgba(255,255,255,.08);
-  border-radius:20px;
-  padding:30px;
+  background:white;
+  color:#333;
+  border-radius:25px;
+  padding:30px 20px;
+  font-size:2.5rem;
   cursor:pointer;
-  transition:.3s;
-  border:1px solid rgba(255,255,255,.2);
+  transition:.4s;
 }
 .card:hover{
-  transform:scale(1.06);
-  box-shadow:0 0 30px rgba(255,111,174,.5);
+  transform:scale(1.1);
 }
 
-/* POPUP MESSAGE */
-.popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
+/* ANIMATION AREA */
+#animation{
+  font-size:5rem;
+  margin:30px 0;
+  animation:pop .5s ease;
 }
-.popup-box{
-  background:#0f1438;
-  border-radius:22px;
-  padding:35px;
-  max-width:500px;
-  animation:zoom .4s ease;
-}
-@keyframes zoom{
-  from{transform:scale(.6);opacity:0}
+@keyframes pop{
+  from{transform:scale(.5);opacity:0}
   to{transform:scale(1);opacity:1}
 }
-.popup-box p{
-  color:#ffd6ea;
-  font-size:1.15rem;
+
+/* MESSAGE BOX */
+#msgBox{
+  background:white;
+  color:#ff3f8e;
+  margin:30px auto;
+  padding:30px;
+  border-radius:30px;
+  max-width:500px;
+  display:none;
+  font-size:1.2rem;
   line-height:1.8;
-}
-.close{
-  margin-top:25px;
-  padding:10px 28px;
-  border:none;
-  border-radius:25px;
-  background:var(--pink);
-  color:white;
-  cursor:pointer;
 }
 
 /* FOOTER */
 .footer{
-  padding:60px 20px;
-  font-size:1.4rem;
-  color:#ffb3da;
+  margin:50px 0;
+  font-size:1.3rem;
 }
 .signature{
-  margin-top:10px;
-  color:#ffd6ea;
   font-weight:bold;
 }
 </style>
@@ -163,85 +83,46 @@ body{
 
 <body>
 
-<!-- INTRO -->
-<div class="intro" id="intro">
-  <h1>Hey Nisha Khan 💖</h1>
-  <p>I made something special for you</p>
-  <button onclick="startSite()">Tap to Continue ✨</button>
+<audio id="music" autoplay loop>
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<h1>Nisha Khan 🫶</h1>
+<p>Tap cards one by one 💌</p>
+
+<div id="animation">💖</div>
+
+<div class="cards">
+  <div class="card" onclick="show(0)">🤗</div>
+  <div class="card" onclick="show(1)">😘</div>
+  <div class="card" onclick="show(2)">😠</div>
+  <div class="card" onclick="show(3)">🥺</div>
+  <div class="card" onclick="show(4)">❤️</div>
 </div>
 
-<div class="header">
-  <h2>My Favorite Friend 🌸</h2>
-  <p>This friendship means more than words</p>
-</div>
-
-<h3 class="section-title">Tap Any Card 💌</h3>
-
-<div class="card-grid">
-  <div class="card" onclick="openCard(0)">🌷 Click Me</div>
-  <div class="card" onclick="openCard(1)">💖 Click Me</div>
-  <div class="card" onclick="openCard(2)">🌙 Click Me</div>
-  <div class="card" onclick="openCard(3)">✨ Click Me</div>
-  <div class="card" onclick="openCard(4)">😊 Click Me</div>
-  <div class="card" onclick="openCard(5)">🫰 Click Me</div>
-  <div class="card" onclick="openCard(6)">🌸 Click Me</div>
-  <div class="card" onclick="openCard(7)">💫 Click Me</div>
-  <div class="card" onclick="openCard(8)">💌 Click Me</div>
-  <div class="card" onclick="openCard(9)">❤️ Click Me</div>
-</div>
-
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <p id="popupText"></p>
-    <button class="close" onclick="closeCard()">Close 💖</button>
-  </div>
-</div>
+<div id="msgBox"></div>
 
 <div class="footer">
-Forever grateful for you 🌷  
-<div class="signature">Made by Sivasingh 🥀</div>
+  Always smiling 🌸<br>
+  <span class="signature">Made by Sivasingh 🥀</span>
 </div>
 
 <script>
-function startSite(){
-  document.getElementById("intro").style.display="none";
-  confetti({particleCount:120,spread:100});
-}
-
-// messages
+const animations=["🤗🤗","😘💋","😠💢","🥺👉👈","❤️✨"];
 const messages=[
-"🌸 Nisha Khan, tumhari dosti meri zindagi ka wo hissa hai jo bina wajah bhi special lagta hai.",
-"💖 Tumhari smile dekh kar stress bhi pighal jata hai. Tum ho toh sab theek lagta hai.",
-"🌙 Jab baat karne ka mann ho aur tum ho, toh duniya thodi aur khoobsurat lagti hai.",
-"✨ Tumhari care aur understanding priceless hai. Thanks for always being there.",
-"😊 Tum sirf friend nahi ho, tum ek comfort ho jahan dil shaant ho jata hai.",
-"🫰 Ye website ek chhoti si koshish hai tumhe smile dene ki.",
-"🌸 Friendship ho toh tum jaisi ho — real, cute aur dil se.",
-"💫 Tumhari presence hi kaafi hoti hai din achha banane ke liye.",
-"💌 Har insaan ke life me ek aisa friend hota hai — tum wahi ho.",
-"❤️ Hamesha khush rehna Nisha Khan, tum deserve karti ho."
+"🤗 Hug wali feeling – jab tum paas hoti ho toh duniya safe lagti hai Nisha 💖",
+"😘 Ek cute si kiss – jo bina bole sab keh jaati hai 🫶",
+"😠 Thoda gussa bhi cute hota hai jab tum karti ho 😅",
+"🥺 Sorry wali smile – jo dil seedha pighla deti hai 💕",
+"❤️ Ye dosti hamesha aisi hi rahe – pure, soft aur special ✨"
 ];
 
-function openCard(i){
-  document.getElementById("popupText").innerText=messages[i];
-  document.getElementById("popup").style.display="flex";
-  confetti({particleCount:50,spread:80});
+function show(i){
+  document.getElementById("animation").innerHTML=animations[i];
+  const box=document.getElementById("msgBox");
+  box.style.display="block";
+  box.innerText=messages[i];
 }
-function closeCard(){
-  document.getElementById("popup").style.display="none";
-}
-
-// floating hearts
-setInterval(()=>{
-  let h=document.createElement("div");
-  h.className="heart";
-  h.innerText="💖";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(Math.random()*3+4)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-},500);
 </script>
 
 </body>
