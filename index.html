@@ -3,41 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Ritika Ji - By SivaSingh</title>
+<title>For Ritika Ji 😍 - By SivaSingh</title>
 
 <style>
 :root{
 --bg:#0b0e14;
 --card:#1a1f29;
---accent:#ff4d6d;
---text:#eaeaea;
+--text:#e0e0e0;
+--accent:#ff4757;
 }
 
 body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
 background:var(--bg);
 color:var(--text);
-text-align:center;
-overflow-x:hidden;
+font-family:'Segoe UI',sans-serif;
+margin:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:20px;
 }
 
-header{
-padding:30px 10px;
-}
+header{text-align:center;margin-bottom:20px}
 
-h1{
-color:var(--accent);
-margin:10px 0;
-}
-
-.made{
-opacity:.8;
-font-style:italic;
-}
-
-.doll{
-font-size:90px;
+.doll-container{
+font-size:80px;
 animation:bounce 2s infinite;
 }
 
@@ -46,86 +36,59 @@ animation:bounce 2s infinite;
 50%{transform:translateY(-20px)}
 }
 
-/* music */
-audio{display:none}
+h1{color:var(--accent)}
+.made-by{opacity:.8;font-style:italic}
 
-/* photo slider */
-.gallery{
-display:flex;
-overflow-x:auto;
-gap:15px;
-padding:20px;
-scrollbar-width:none;
+/* PHOTO */
+.photo-box{
+margin:20px;
+cursor:pointer;
+text-align:center;
 }
-.gallery::-webkit-scrollbar{display:none}
 
-.gallery img{
-height:180px;
-border-radius:15px;
+.photo-box img{
+width:90%;
+max-width:320px;
+border-radius:20px;
 border:3px solid var(--accent);
-flex-shrink:0;
+box-shadow:0 0 20px rgba(255,71,87,.5);
 transition:.3s;
 }
-.gallery img:hover{transform:scale(1.05)}
 
-/* cards */
+.photo-box img:hover{transform:scale(1.05)}
+
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
 gap:15px;
+width:100%;
 max-width:900px;
-margin:30px auto;
-padding:10px;
 }
 
 .card{
 background:var(--card);
 border:2px solid #333;
 border-radius:15px;
-height:130px;
+height:120px;
 display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
 padding:10px;
 transition:.3s;
-position:relative;
 overflow:hidden;
 }
 
-.card:hover{border-color:var(--accent);transform:scale(1.05)}
+.card:hover{transform:scale(1.05);border-color:var(--accent)}
 
-.cover{
-font-size:40px;
-}
+.cover{font-size:40px}
+.content{display:none;font-size:14px;font-weight:bold}
 
-.content{
-display:none;
-font-size:14px;
-font-weight:bold;
-line-height:1.4;
-}
-
-.blast{
-animation:blast .5s forwards;
-}
-
+.blast{animation:blast .5s}
 @keyframes blast{
 0%{transform:scale(.5);opacity:0}
 60%{transform:scale(1.2)}
 100%{transform:scale(1);opacity:1}
-}
-
-.float{
-position:fixed;
-pointer-events:none;
-z-index:999;
-}
-
-footer{
-padding:30px;
-font-size:18px;
-color:var(--accent);
 }
 </style>
 </head>
@@ -133,90 +96,80 @@ color:var(--accent);
 <body>
 
 <!-- 🎵 SONG -->
-<audio autoplay loop>
-<source src="birthday.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+<source src="newsong.mp3" type="audio/mpeg">
 </audio>
 
+<div class="doll-container">👦🏻</div>
+
 <header>
-<div class="doll">👦🏻</div>
 <h1>For Ritika Ji 😍</h1>
-<p class="made">Made with ❤️ by SivaSingh🥀</p>
-<p>Click cards one by one 💌</p>
+<p class="made-by">Made with ❤️ by SivaSingh</p>
+<p>Click photo & cards 🎁</p>
 </header>
 
-<!-- 📸 PHOTOS -->
-<div class="gallery">
-<img src="photo1.jpg">
-<img src="photo2.jpg">
-<img src="photo3.jpg">
-<img src="photo4.jpg">
-<img src="photo5.jpg">
-<img src="photo6.jpg">
-<img src="photo7.jpg">
-<img src="photo8.jpg">
-<img src="photo9.jpg">
-<img src="photo10.jpg">
+<!-- 📸 PHOTO CLICK -->
+<div class="photo-box" onclick="nextPhoto()">
+<img id="photo" src="photo1.jpg">
+<p>Click photo 📸</p>
 </div>
 
-<!-- 💌 CARDS -->
-<div class="grid" id="grid"></div>
-
-<footer>
-Always smiling, always special ✨  
-<br>— SivaSingh
-</footer>
+<!-- 💌 SHAYARI GRID -->
+<div class="grid" id="shayariGrid"></div>
 
 <script>
-const msgs=[
-"Zindagi ke safar mein tera saath chahiye, tanhai mein tera haath chahiye 💖",
-"Phool bhi sharma jaye, jab Ritika Ji muskuraye 🌸",
-"Dosti ka sabse khoobsurat naam ho tum 💫",
-"Har pal khush raho, yahi meri dua hai 🙏",
-"Ritika Ji, tum meri dosti ki shaan ho 💎",
-"Teri hansi mere din bana deti hai ☀️",
-"Duniya ki saari khushiyan tumhare naam 🎁",
-"Tu ho to har pal special lagta hai ✨",
-"Dosti ka rishta sabse pyara hota hai 🫰",
-"Ritika Ji jaisi dost naseeb walon ko milti hai 💝",
-"Har mood mein cute, har pal sweet 😍",
-"Tera hona hi kaafi hai 💕",
-"Muskurate raho hamesha 🌈",
-"Dil se likha har lafz sirf tumhare liye 💌",
-"Yeh website sirf tumhare liye hi hai 😘"
+/* MUSIC */
+const music=document.getElementById("bgMusic");
+document.addEventListener("click",()=>music.play().catch(()=>{}));
+
+/* PHOTO SYSTEM */
+let p=1;
+function nextPhoto(){
+p++; if(p>10) p=1;
+document.getElementById("photo").src=`photo${p}.jpg`;
+}
+
+/* 💖 ALL 21 SHAYARIS – NOTHING REMOVED */
+const shayaris=[
+"Zindagi ke safar mein tera sath chahiye, tanhaiyon mein tera hath chahiye.",
+"Phoolon ki mehak bhi fiki lagti hai, jab Ritika Ji teri muskurahat dikhti hai.",
+"Khuda kare har khushi teri ho, har kadam pe kamyabi teri ho.",
+"Dosti ka rishta sabse pyara hai, tu hi is dil ka sitara hai.",
+"Chand se pyari chandni, chandni se pyari raat, raat se pyari zindagi, aur zindagi se pyari teri dosti.",
+"Aapki dosti ne humein jeena sikhaya, har mod pe saath nibhaya.",
+"Khuda se mangi thi ek dua, mil gayi tum jaisi dost wafa.",
+"Dil se likhi hai baat, hamesha rahe Ritika Ji tera saath.",
+"Teri dosti ka nasha hai, har dard ki yahi dawa hai.",
+"Suraj ki pehli kiran ho tum, mere liye sabse khas ho tum.",
+"Bas tum haste raho, yahi dua hai meri har pal.",
+"Duniya ki har khushi Ritika Ji ke naam ho, tera har din ek naya paigam ho.",
+"Dil ke rishte kabhi toote nahi karte, sachi dost kabhi rootha nahi karte.",
+"Aapki muskurahat sabse haseen hai, aap jaisa koi aur nahi hai.",
+"Zindagi mein aaye ho aise, jaise koi dua qubool hui ho.",
+"Khushboo ki tarah mehko tum sada, dosti ka yahi hai asli maza.",
+"Har pal tumhein yaad karte hain, tumhari dosti pe naaz karte hain.",
+"Ritika Ji, tum meri dosti ka maan ho, is dil ki tum hi shaan ho.",
+"Rabb se bas yahi maangte hain, ki tum hamesha salamat raho.",
+"Dosti ka safar yunhi chalta rahe, waqt badle par hum na badlein.",
+"SivaSingh ki taraf se dosti ka uphar, hamesha rahe tumse pyaar aur dular ❤️"
 ];
 
-const emojis=["💖","✨","😍","🌸","🦋","🎈","💝","🔥"];
-const grid=document.getElementById("grid");
+const emojis=["🌟","✨","🔥","💎","🌸","🦋","🎈","🍫"];
+const grid=document.getElementById("shayariGrid");
 
-msgs.forEach(m=>{
+shayaris.forEach(t=>{
 const c=document.createElement("div");
 c.className="card";
 c.innerHTML=`<div class="cover">${emojis[Math.floor(Math.random()*emojis.length)]}</div>
-<div class="content">${m}</div>`;
-c.onclick=e=>{
+<div class="content">${t}</div>`;
+c.onclick=()=>{
 c.querySelector(".cover").style.display="none";
-const t=c.querySelector(".content");
-t.style.display="block";
-t.classList.add("blast");
-blast(e);
+const ct=c.querySelector(".content");
+ct.style.display="block";
+ct.classList.add("blast");
 };
 grid.appendChild(c);
 });
-
-function blast(e){
-for(let i=0;i<8;i++){
-const f=document.createElement("div");
-f.className="float";
-f.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
-f.style.left=e.clientX+"px";
-f.style.top=e.clientY+"px";
-document.body.appendChild(f);
-f.animate([
-{transform:"translate(0,0)",opacity:1},
-{transform:`translate(${(Math.random()-0.5)*200}px,${(Math.random()-0.5)*200}px)`,opacity:0}
-],{duration:900}).onfinish=()=>f.remove();
-}
-}
 </script>
 
 </body>
