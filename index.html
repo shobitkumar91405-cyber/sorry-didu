@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>I Love You Pallavi ji 😍</title>
+<title>I Love You Aarvi ji 😍</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -22,6 +22,60 @@ overflow-x:hidden;
 text-align:center;
 }
 
+/* 🌌 START SCREEN */
+#startScreen{
+position:fixed;
+inset:0;
+background:radial-gradient(circle,#200020,#000);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:10000;
+}
+
+/* 3D HEART */
+#bigHeart{
+font-size:120px;
+cursor:pointer;
+animation:spin 3s linear infinite;
+transform-style:preserve-3d;
+}
+
+@keyframes spin{
+from{transform:rotateY(0deg)}
+to{transform:rotateY(360deg)}
+}
+
+/* START TEXT */
+#startText{
+display:none;
+font-size:22px;
+margin:20px;
+background:linear-gradient(90deg,#ff4d6d,#ffd700,#00eaff);
+-webkit-background-clip:text;
+color:transparent;
+animation:glow 2s infinite;
+}
+
+@keyframes glow{
+50%{filter:drop-shadow(0 0 10px #ff4d6d)}
+}
+
+/* YES BUTTON */
+#yesBtn{
+display:none;
+margin-top:20px;
+padding:12px 25px;
+font-size:18px;
+border:none;
+border-radius:30px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+box-shadow:0 0 20px #ff4d6d;
+}
+
 /* ❤️ INTRO */
 #intro{
 position:fixed;
@@ -33,6 +87,7 @@ align-items:center;
 justify-content:center;
 z-index:9999;
 animation:fadeOut 4s forwards;
+display:none;
 }
 
 #intro h1{
@@ -42,9 +97,7 @@ animation:pulse 1s infinite;
 }
 
 @keyframes pulse{
-0%{transform:scale(1)}
 50%{transform:scale(1.15)}
-100%{transform:scale(1)}
 }
 
 @keyframes fadeOut{
@@ -62,7 +115,6 @@ background:#5dade2;
 animation:fall linear infinite;
 opacity:.6;
 }
-
 @keyframes fall{
 to{transform:translateY(110vh)}
 }
@@ -74,7 +126,6 @@ inset:0;
 background:white;
 opacity:0;
 pointer-events:none;
-transition:.1s;
 }
 
 /* ❤️ HEARTS */
@@ -83,7 +134,6 @@ position:fixed;
 font-size:22px;
 animation:float 2.5s linear forwards;
 }
-
 @keyframes float{
 to{transform:translateY(-250px) scale(1.5);opacity:0}
 }
@@ -94,18 +144,13 @@ h2{color:var(--accent)}
 .made{opacity:.7}
 
 /* INSTAGRAM */
-.insta{
-margin-top:10px;
-font-size:15px;
-}
 .insta a{
 color:#ff69b4;
-text-decoration:none;
 font-weight:bold;
+text-decoration:none;
 }
-.insta a:hover{text-decoration:underline}
 
-/* VIDEO CARDS */
+/* VIDEOS */
 .videos{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -120,13 +165,11 @@ background:var(--card);
 border-radius:20px;
 padding:10px;
 }
-
 .vcard video{
 width:100%;
 border-radius:15px;
 display:none;
 }
-
 .play{
 font-size:40px;
 cursor:pointer;
@@ -149,19 +192,14 @@ max-width:900px;
 margin:20px auto;
 padding:10px;
 }
-
 .card{
 background:var(--card);
 border-radius:15px;
 padding:15px;
 cursor:pointer;
-transition:.3s;
 }
-
-.card:active{transform:scale(1.08)}
-
 .cover{font-size:35px}
-.content{display:none;font-size:14px;font-weight:bold}
+.content{display:none;font-weight:bold}
 
 /* AUDIO */
 audio{display:none}
@@ -170,31 +208,36 @@ audio{display:none}
 
 <body>
 
-<!-- ❤️ INTRO -->
-<div id="intro">
-<h1>❤️ I Love You Pallavi ji 😍 ❤️</h1>
+<!-- 🌌 START -->
+<div id="startScreen">
+<div id="bigHeart">❤️</div>
+<div id="startText">
+Aarvi ji 💖 Welcome to SivaSingh's Heart <br><br>
+I want to say I Love You ❤️ <br>
+Do you love me?
+</div>
+<button id="yesBtn">YES ❤️</button>
 </div>
 
-<!-- ⚡ LIGHT -->
+<!-- ❤️ INTRO -->
+<div id="intro">
+<h1>❤️ I Love You Aarvi ji 😍 ❤️</h1>
+</div>
+
 <div id="light" class="light"></div>
 
-<!-- 🎵 SONG -->
 <audio id="bgMusic" loop>
 <source src="newsong.mp3">
 </audio>
 
 <header>
-<h2>For Pallavi ji 😍</h2>
-
-<div class="insta">
-📸 Instagram :
+<h2>For Aarvi ji 😍</h2>
+<div class="insta">📸 Instagram :
 <a href="https://instagram.com/smss1708" target="_blank">@smss1708</a>
 </div>
-
 <p class="made">Made with ❤️ by SivaSingh</p>
 </header>
 
-<!-- 🎬 VIDEOS -->
 <div class="videos">
 <div class="vcard"><div class="play" onclick="toggleVideo(this)">❤️</div><video src="video1.mp4" playsinline></video></div>
 <div class="vcard"><div class="play" onclick="toggleVideo(this)">❤️</div><video src="video2.mp4" playsinline></video></div>
@@ -202,17 +245,31 @@ audio{display:none}
 <div class="vcard"><div class="play" onclick="toggleVideo(this)">❤️</div><video src="video4.mp4" playsinline></video></div>
 </div>
 
-<!-- 📸 PHOTO -->
 <div class="photo-box" onclick="nextPhoto()">
 <img id="photo" src="photo1.jpg">
 <p>Click Photo 📸</p>
 </div>
 
-<!-- 💌 SHAYARI -->
 <div class="grid" id="shayariGrid"></div>
 
 <script>
-/* 🌧️ RAIN */
+/* START LOGIC */
+const bigHeart=document.getElementById("bigHeart");
+const text=document.getElementById("startText");
+const yesBtn=document.getElementById("yesBtn");
+
+bigHeart.onclick=e=>{
+text.style.display="block";
+yesBtn.style.display="inline-block";
+heartBlast(e.clientX,e.clientY);
+};
+
+yesBtn.onclick=()=>{
+document.getElementById("startScreen").style.display="none";
+document.getElementById("intro").style.display="flex";
+};
+
+/* RAIN */
 for(let i=0;i<120;i++){
 let r=document.createElement("div");
 r.className="rain";
@@ -221,14 +278,14 @@ r.style.animationDuration=0.5+Math.random()+"s";
 document.body.appendChild(r);
 }
 
-/* ⚡ LIGHT */
+/* FLASH */
 function flash(){
 let l=document.getElementById("light");
 l.style.opacity=0.9;
 setTimeout(()=>l.style.opacity=0,120);
 }
 
-/* ❤️ HEART BLAST */
+/* HEART BLAST */
 function heartBlast(x,y){
 for(let i=0;i<40;i++){
 let h=document.createElement("div");
@@ -241,73 +298,45 @@ setTimeout(()=>h.remove(),2500);
 }
 }
 
-/* 🎬 VIDEO */
+/* VIDEO */
 function toggleVideo(el){
 const card=el.parentElement;
 const video=card.querySelector("video");
-
 document.querySelectorAll(".vcard video").forEach(v=>{
 if(v!==video){
-v.pause();v.currentTime=0;
-v.style.display="none";
+v.pause();v.style.display="none";
 v.parentElement.querySelector(".play").style.display="block";
 }
 });
-
 el.style.display="none";
 video.style.display="block";
 video.play();
 }
 
-/* 📸 PHOTO */
+/* PHOTO */
 let p=1;
 function nextPhoto(){
-p++; if(p>10) p=1;
-document.getElementById("photo").src=`photo${p}.jpg`;
+p++; if(p>10)p=1;
+photo.src=`photo${p}.jpg`;
 }
 
-/* 🎵 MUSIC */
+/* SHAYARI */
 const music=document.getElementById("bgMusic");
-
-/* 💌 SHAYARI */
 const shayaris=[
-"Zindagi ke safar mein tera sath chahiye, tanhaiyon mein tera hath chahiye.",
-"Phoolon ki mehak bhi fiki lagti hai, jab Pallavi ji 😍 teri muskurahat dikhti hai.",
-"Khuda kare har khushi teri ho, har kadam pe kamyabi teri ho.",
-"Dosti ka rishta sabse pyara hai, tu hi is dil ka sitara hai.",
-"Chand se pyari chandni, chandni se pyari raat, raat se pyari zindagi, aur zindagi se pyari teri dosti.",
-"Aapki dosti ne humein jeena sikhaya, har mod pe saath nibhaya.",
-"Khuda se mangi thi ek dua, mil gayi tum jaisi dost wafa.",
-"Dil se likhi hai baat, hamesha rahe Pallavi ji 😍 tera saath.",
-"Teri dosti ka nasha hai, har dard ki yahi dawa hai.",
-"Suraj ki pehli kiran ho tum, mere liye sabse khas ho tum.",
-"Bas tum haste raho, yahi dua hai meri har pal.",
-"Duniya ki har khushi Pallavi ji 😍 ke naam ho, tera har din ek naya paigam ho.",
-"Dil ke rishte kabhi toote nahi karte, sachi dost kabhi rootha nahi karte.",
-"Aapki muskurahat sabse haseen hai, aap jaisa koi aur nahi hai.",
-"Zindagi mein aaye ho aise, jaise koi dua qubool hui ho.",
-"Khushboo ki tarah mehko tum sada, dosti ka yahi hai asli maza.",
-"Har pal tumhein yaad karte hain, tumhari dosti pe naaz karte hain.",
-"Pallavi ji 😍, tum meri dosti ka maan ho, is dil ki tum hi shaan ho.",
-"Rabb se bas yahi maangte hain, ki tum hamesha salamat raho.",
-"Dosti ka safar yunhi chalta rahe, waqt badle par hum na badlein.",
-"SivaSingh ki taraf se dosti ka uphar ❤️"
+"Aarvi ji 😍 tum meri zindagi ka sabse khoobsurat ehsaas ho.",
+"Har muskurahat tumhari dil chura leti hai.",
+"SivaSingh ke dil ka sabse pyara hissa ho tum ❤️"
 ];
 
 const grid=document.getElementById("shayariGrid");
-const emojis=["🌟","✨","💎","🌸","🦋","🎈"];
-
 shayaris.forEach(t=>{
 let c=document.createElement("div");
 c.className="card";
-c.innerHTML=`<div class="cover">${emojis[Math.floor(Math.random()*emojis.length)]}</div>
-<div class="content">${t}</div>`;
+c.innerHTML=`<div class="cover">💖</div><div class="content">${t}</div>`;
 c.onclick=e=>{
 c.querySelector(".cover").style.display="none";
 c.querySelector(".content").style.display="block";
-music.play();
-flash();
-heartBlast(e.clientX,e.clientY);
+music.play(); flash(); heartBlast(e.clientX,e.clientY);
 };
 grid.appendChild(c);
 });
