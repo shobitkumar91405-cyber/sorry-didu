@@ -1,320 +1,545 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Broken Memories</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broken Heart - SivaSingh</title>
+    <style>
+        :root {
+            --bg: #0b0e14;
+            --primary: #ff2e63;
+            --dark-red: #8b0000;
+            --text: #e0e0e0;
+        }
 
-<style>
-:root{
---bg-dark:#0b0e14;
---heart-pink:#ff4d6d;
---heart-red:#c9184a;
---heart-dark:#590d22;
---text-light:#e0e0e0;
---accent-red:#800f2f;
-}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,Arial}
-body{background:var(--bg-dark);color:var(--text-light);overflow-x:hidden;height:100vh}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
 
-#main-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
-.thunder-flash{position:fixed;top:0;left:0;width:100%;height:100%;background:white;opacity:0;pointer-events:none;z-index:1000}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+        }
 
-#intro-overlay{
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:var(--bg-dark);
-display:flex;flex-direction:column;justify-content:center;align-items:center;
-z-index:100;transition:1s
-}
+        /* Rain Animation */
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
 
-.scene-3d{perspective:1000px;width:300px;height:300px;display:flex;justify-content:center;align-items:center}
+        .drop {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            width: 1px;
+            height: 80px;
+            top: -100px;
+            animation: fall linear infinite;
+        }
 
-#heart-3d{
-width:100px;height:90px;
-animation:rotateHeart 10s infinite linear,heartbeat 1.5s infinite;
-cursor:pointer
-}
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
 
-@keyframes rotateHeart{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
-@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+        /* Intro Screen */
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
 
-.intro-ui{margin-top:40px;text-align:center;display:none}
-.glow-text{font-size:1.5rem;text-shadow:0 0 15px var(--heart-pink);margin-bottom:20px}
+        /* 3D Heart */
+        .heart-container {
+            perspective: 1000px;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            position: relative;
+        }
 
-.btn-container{display:flex;gap:20px;justify-content:center}
-.btn{padding:12px 30px;border:none;border-radius:25px;font-weight:bold;cursor:pointer}
-.btn-yes{background:#ff4d6d;color:white}
-.btn-breakup{background:#444;color:#bbb}
+        .heart-3d {
+            position: relative;
+            width: 100px;
+            height: 90px;
+            margin: 50px auto;
+            transform-style: preserve-3d;
+            animation: rotate3d 10s linear infinite, heartbeat 1.5s ease-in-out infinite;
+            transition: color 5s infinite;
+        }
 
-#main-content{
-display:none;
-padding:20px;
-max-width:900px;
-margin:auto;
-opacity:0;
-transition:2s
-}
+        .heart-3d::before, .heart-3d::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 160px;
+            background: var(--primary);
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+            box-shadow: 0 0 40px var(--primary);
+        }
 
-section{margin-bottom:60px}
-h2{text-align:center;margin-bottom:30px;color:var(--heart-red);letter-spacing:2px}
+        .heart-3d::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
 
-.typewriter-container{
-height:100px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-style:italic;
-font-size:1.2rem;
-color:#aaa;
-text-align:center
-}
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
 
-.video-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px
-}
+        @keyframes heartbeat {
+            0%, 100% { scale: 1; }
+            50% { scale: 1.1; }
+        }
 
-.video-card{
-background:#151921;
-border-radius:10px;
-overflow:hidden;
-border:1px solid #333
-}
+        /* Question Overlay */
+        #question-overlay {
+            display: none;
+            position: absolute;
+            text-align: center;
+            z-index: 1001;
+            padding: 20px;
+        }
 
-video{width:100%;display:block}
+        .glow-text {
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 0 20px var(--primary);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
 
-#photo-display{
-width:100%;
-height:400px;
-background-size:cover;
-background-position:center;
-border-radius:15px;
-cursor:pointer;
-transition:0.5s;
-border:2px solid #222
-}
+        .btn-wrap {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
 
-.shayari-grid{display:grid;gap:15px}
-.shayari-card{
-background:linear-gradient(145deg,#151921,#0b0e14);
-padding:25px;
-border-radius:12px;
-border-left:4px solid var(--accent-red);
-cursor:pointer
-}
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
 
-.chat-box{
-background:#151921;
-padding:20px;
-border-radius:15px;
-max-width:400px;
-margin:auto
-}
+        .btn-yes { background: var(--primary); color: white; }
+        .btn-breakup { background: #333; color: white; }
 
-.chat-bubble{
-background:#2d3436;
-padding:10px 15px;
-border-radius:18px 18px 18px 0;
-margin-bottom:8px
-}
+        /* Main Content */
+        #main-content {
+            display: none;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
 
-.insta-section{
-text-align:center;
-padding:20px;
-background:#111;
-border-radius:10px
-}
+        .section-title {
+            text-align: center;
+            margin: 40px 0 20px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
 
-.insta-link{color:var(--heart-pink);display:block;margin:10px 0;text-decoration:none}
+        /* Typewriter */
+        .typewriter-box {
+            height: 60px;
+            text-align: center;
+            font-style: italic;
+            color: #aaa;
+            margin: 20px 0;
+        }
 
-#goodbye-screen{
-position:fixed;
-top:0;left:0;width:100%;height:100%;
-background:black;
-display:none;
-justify-content:center;
-align-items:center;
-z-index:2000;
-flex-direction:column;
-text-align:center
-}
+        /* Video Cards */
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
 
-@media(max-width:600px){
-.video-grid{grid-template-columns:1fr}
-#photo-display{height:250px}
-}
-</style>
+        .video-card {
+            background: #161a23;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 9/16;
+            border: 1px solid #222;
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Photo Gallery */
+        .photo-frame {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: #161a23;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 5px solid #1c212c;
+            cursor: pointer;
+        }
+
+        #gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s;
+        }
+
+        /* Shayari Cards */
+        .shayari-card {
+            background: linear-gradient(145deg, #161a23, #0b0e14);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Fake Chat */
+        .chat-box {
+            background: #161a23;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .sent {
+            background: #2d3446;
+            padding: 10px 15px;
+            border-radius: 15px 15px 0 15px;
+            margin-left: auto;
+        }
+
+        .status {
+            font-size: 0.7rem;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        /* Instagram */
+        .insta-footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid #222;
+        }
+
+        .insta-handle {
+            display: block;
+            color: var(--primary);
+            text-decoration: none;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        /* Final Screen */
+        #final-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: 2000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .flash {
+            animation: flashAnim 0.3s;
+        }
+
+        @keyframes flashAnim {
+            0% { background: white; }
+            100% { background: transparent; }
+        }
+
+        .shake {
+            animation: shakeAnim 0.5s;
+        }
+
+        @keyframes shakeAnim {
+            0%, 100% { transform: translate(0,0); }
+            20% { transform: translate(-10px, 10px); }
+            40% { transform: translate(10px, -10px); }
+            60% { transform: translate(-10px, -10px); }
+            80% { transform: translate(10px, 10px); }
+        }
+
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            animation: float 3s forwards;
+        }
+
+        @keyframes float {
+            to { transform: translateY(-200px) rotate(360deg); opacity: 0; }
+        }
+
+    </style>
 </head>
+<body onclick="initAudio()">
 
-<body>
+    <div class="rain" id="rain-container"></div>
 
-<canvas id="main-canvas"></canvas>
-<div class="thunder-flash" id="flash"></div>
+    <div id="intro-screen">
+        <div class="heart-container" onclick="explodeHeart()">
+            <div class="heart-3d" id="main-heart"></div>
+        </div>
+        
+        <div id="question-overlay">
+            <h1 class="glow-text">
+                Aarvi ji<br>
+                Welcome to SivaSingh’s heart 💖<br>
+                I want to say I love you<br>
+                Do you love me?
+            </h1>
+            <div class="btn-wrap">
+                <button class="btn btn-yes" onclick="handleResponse('yes')">YES ❤️</button>
+                <button class="btn btn-breakup" onclick="handleResponse('no')">BREAKUP 💔</button>
+            </div>
+        </div>
+    </div>
 
-<div id="intro-overlay">
-<div class="scene-3d">
-<div id="heart-3d" onclick="explodeHeart()"></div>
-</div>
+    <main id="main-content">
+        <div class="typewriter-box" id="typewriter"></div>
 
-<div class="intro-ui" id="intro-ui">
-<div class="glow-text">
-Aarvi ji<br>
-Welcome to SivaSingh’s heart 💖<br>
-I want to say I love you<br>
-Do you love me?
-</div>
-<div class="btn-container">
-<button class="btn btn-yes" onclick="sayYes()">YES ❤️</button>
-<button class="btn btn-breakup" onclick="startBreakup()">BREAKUP 💔</button>
-</div>
-</div>
-</div>
+        <section class="section-title">MEMORIES LEFT BEHIND</section>
+        <div class="photo-frame" onclick="nextPhoto()">
+            <img src="photo1.jpg" id="gallery-img" alt="Memory">
+        </div>
 
-<div id="main-content">
+        <section class="section-title">BROKEN WORDS</section>
+        <div class="shayari-card" onclick="triggerShayariEffect(this)">
+            "Tumhara naam lene se ab dil dukhne lagta hai..."
+        </div>
+        <div class="shayari-card" onclick="triggerShayariEffect(this)">
+            "Tumne to keh diya breakup, mera kya jo mar gaya?"
+        </div>
 
-<section class="typewriter-section">
-<div class="typewriter-container" id="typewriter"></div>
-</section>
+        <section class="section-title">UNSENT MESSAGES</section>
+        <div class="chat-box">
+            <div class="message sent">
+                Tum ab bhi yaad aati ho…
+                <div class="status">Seen ✔✔</div>
+            </div>
+            <div class="status" style="text-align: center">Last seen long ago</div>
+        </div>
 
-<section>
-<h2>Broken Memories</h2>
-<div class="video-grid">
-<div class="video-card"><video src="video1.mp4" onclick="playVid(this)" loop></video></div>
-<div class="video-card"><video src="video2.mp4" onclick="playVid(this)" loop></video></div>
-<div class="video-card"><video src="video3.mp4" onclick="playVid(this)" loop></video></div>
-<div class="video-card"><video src="video4.mp4" onclick="playVid(this)" loop></video></div>
-</div>
-</section>
+        <section class="section-title">THE MOMENTS</section>
+        <div class="video-grid">
+            <div class="video-card"><video src="video1.mp4" onclick="toggleVideo(this)" loop></video></div>
+            <div class="video-card"><video src="video2.mp4" onclick="toggleVideo(this)" loop></video></div>
+            <div class="video-card"><video src="video3.mp4" onclick="toggleVideo(this)" loop></video></div>
+            <div class="video-card"><video src="video4.mp4" onclick="toggleVideo(this)" loop></video></div>
+        </div>
 
-<section>
-<h2>Fading Moments</h2>
-<div id="photo-display" onclick="nextPhoto()" style="background-image:url('photo1.jpg')"></div>
-</section>
+        <footer class="insta-footer">
+            📸 Instagram
+            <a href="#" class="insta-handle">@smss1708</a>
+            <a href="#" class="insta-handle">@black_its_me20</a>
+            <br>
+            <button class="btn btn-breakup" onclick="showFinalGoodbye()">GOODBYE 🥀</button>
+        </footer>
+    </main>
 
-<section>
-<h2>Painful Words</h2>
-<div class="shayari-grid">
-<div class="shayari-card" onclick="tapShayari()">“Kuch log sirf yaadon mein reh jaate hain…”</div>
-<div class="shayari-card" onclick="tapShayari()">“Hum chaah kar bhi tumhare nahi rahe…”</div>
-<div class="shayari-card" onclick="tapShayari()">“Mohabbat aaj bhi hai, par ab saath nahi…”</div>
-<div class="shayari-card" onclick="tapShayari()">“Tumne toh keh diya breakup, par is dil ka kya?”</div>
-</div>
-</section>
+    <div id="final-screen">
+        <h1 class="glow-text">Aaj bhi pyaar hai…<br>Par ab haq nahi…</h1>
+        <button class="btn btn-breakup" onclick="dissolveEverything()">Let You Go 🥀</button>
+    </div>
 
-<section>
-<h2>The Last Conversation</h2>
-<div class="chat-box">
-<div class="chat-bubble">You: Tum ab bhi yaad aati ho…</div>
-<div style="font-size:0.8rem;color:#666">Seen ✔✔</div>
-<div style="font-size:0.7rem;color:#555">Last seen long ago</div>
-</div>
-</section>
+    <audio id="bg-music" src="newsong.mp3" loop></audio>
+    <audio id="shayari-audio" src="broken.mp3"></audio>
 
-<section class="insta-section">
-<p>Follow my pain:</p>
-<a class="insta-link">@smss1708</a>
-<a class="insta-link">@black_its_me20</a>
-</section>
+    <script>
+        // Rain Drops
+        const rainContainer = document.getElementById('rain-container');
+        function createRain() {
+            for(let i=0; i<100; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'drop';
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                rainContainer.appendChild(drop);
+            }
+        }
+        createRain();
 
-<div style="text-align:center;padding:40px">
-<button onclick="finalGoodbye()">Let You Go 🥀</button>
-</div>
+        // Audio Handling
+        const bgMusic = document.getElementById('bg-music');
+        const sfx = document.getElementById('shayari-audio');
+        let audioStarted = false;
 
-</div>
+        function initAudio() {
+            if(!audioStarted) {
+                bgMusic.play().catch(e => console.log("Init audio"));
+                audioStarted = true;
+            }
+        }
 
-<div id="goodbye-screen">
-<h1 style="color:white;font-weight:300">Aaj bhi pyaar hai…<br>Par ab haq nahi…</h1>
-</div>
+        // 3D Heart Logic
+        function explodeHeart() {
+            document.body.classList.add('shake', 'flash');
+            setTimeout(() => document.body.classList.remove('shake', 'flash'), 500);
+            
+            document.getElementById('main-heart').style.display = 'none';
+            document.getElementById('question-overlay').style.display = 'block';
+            
+            createParticles(20);
+        }
 
-<audio id="bg-music" src="newsong.mp3" loop></audio>
-<audio id="broken-music" src="broken.mp3"></audio>
+        function createParticles(count) {
+            for(let i=0; i<count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerHTML = '💔';
+                p.style.left = '50%';
+                p.style.top = '50%';
+                p.style.fontSize = Math.random() * 20 + 10 + 'px';
+                p.style.setProperty('--tx', (Math.random()-0.5)*400 + 'px');
+                p.style.setProperty('--ty', (Math.random()-0.5)*400 + 'px');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 3000);
+            }
+        }
 
-<script>
-const bgMusic=document.getElementById("bg-music");
-const brokenMusic=document.getElementById("broken-music");
-const videos=document.querySelectorAll("video");
+        // Response Logic
+        function handleResponse(choice) {
+            if(choice === 'yes') {
+                alert("She said YES 💖");
+                showWebsite();
+            } else {
+                document.body.classList.add('flash');
+                const heartContainer = document.querySelector('.heart-container');
+                heartContainer.innerHTML = '<div style="font-size:100px; animation: heartbeat 0.2s infinite">💔</div>';
+                setTimeout(showWebsite, 1500);
+            }
+        }
 
-/* VIDEO FIX */
-function playVid(v){
-videos.forEach(x=>{if(x!==v){x.pause();x.currentTime=0;}});
-brokenMusic.pause();
-bgMusic.pause();
-v.play();
-v.onpause=()=>{if(brokenMusic.paused)bgMusic.play();}
-v.onended=()=>{bgMusic.play();}
-}
+        function showWebsite() {
+            document.getElementById('intro-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                startTypewriter();
+            }, 1000);
+        }
 
-/* SHAYARI FIX */
-function tapShayari(){
-videos.forEach(v=>{v.pause();v.currentTime=0});
-bgMusic.pause();
-brokenMusic.currentTime=0;
-brokenMusic.play();
-}
+        // Typewriter
+        const strings = ["Kuch log sirf yaadon mein reh jaate hain…", "Hum chaah kar bhi tumhare nahi rahe…", "Mohabbat aaj bhi hai, par ab saath nahi…"];
+        let sIdx = 0;
+        let cIdx = 0;
+        function startTypewriter() {
+            const el = document.getElementById('typewriter');
+            if(cIdx < strings[sIdx].length) {
+                el.innerHTML += strings[sIdx].charAt(cIdx);
+                cIdx++;
+                setTimeout(startTypewriter, 100);
+            } else {
+                setTimeout(() => {
+                    el.innerHTML = "";
+                    cIdx = 0;
+                    sIdx = (sIdx + 1) % strings.length;
+                    startTypewriter();
+                }, 2000);
+            }
+        }
 
-/* INTRO */
-function explodeHeart(){
-bgMusic.play();
-document.getElementById("intro-ui").style.display="block";
-}
+        // Photo Gallery
+        let photoIdx = 1;
+        function nextPhoto() {
+            const img = document.getElementById('gallery-img');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                photoIdx = (photoIdx % 10) + 1;
+                img.src = `photo${photoIdx}.jpg`;
+                img.style.opacity = '1';
+            }, 500);
+        }
 
-function sayYes(){
-document.getElementById("intro-overlay").style.opacity="0";
-setTimeout(()=>{
-document.getElementById("intro-overlay").style.display="none";
-document.getElementById("main-content").style.display="block";
-setTimeout(()=>document.getElementById("main-content").style.opacity=1,100);
-startTypewriter();
-},1000);
-}
+        // Video Logic
+        function toggleVideo(vid) {
+            const allVids = document.querySelectorAll('video');
+            allVids.forEach(v => {
+                if(v !== vid) {
+                    v.pause();
+                }
+            });
 
-function startBreakup(){
-document.querySelector(".glow-text").innerHTML="💔 HEART BROKEN 💔<br>Hamne aapko dil me rehne ko bola…<br>Aapne hamara hi dil tod diya";
-sayYes();
-}
+            if(vid.paused) {
+                bgMusic.pause();
+                vid.play();
+            } else {
+                vid.pause();
+                bgMusic.play();
+            }
 
-/* TYPEWRITER */
-const messages=[
-"Kuch log sirf yaadon mein reh jaate hain…",
-"Hum chaah kar bhi tumhare nahi rahe…",
-"Mohabbat aaj bhi hai, par ab saath nahi…"
-];
-let idx=0;
-function startTypewriter(){
-const el=document.getElementById("typewriter");
-let i=0;
-el.innerHTML="";
-function type(){
-if(i<messages[idx].length){
-el.innerHTML+=messages[idx].charAt(i++);
-setTimeout(type,100);
-}else{
-setTimeout(()=>{idx=(idx+1)%messages.length;startTypewriter()},2500);
-}
-}
-type();
-}
+            vid.onended = () => {
+                bgMusic.play();
+            };
+        }
 
-/* PHOTOS */
-let p=1;
-function nextPhoto(){
-const d=document.getElementById("photo-display");
-p=p>=10?1:p+1;
-d.style.opacity=0;
-setTimeout(()=>{
-d.style.backgroundImage=`url('photo${p}.jpg')`;
-d.style.opacity=1;
-},500);
-}
+        // Shayari Effects
+        function triggerShayariEffect(el) {
+            document.body.classList.add('flash');
+            setTimeout(() => document.body.classList.remove('flash'), 200);
+            sfx.currentTime = 0;
+            sfx.play();
+            createParticles(10);
+        }
 
-/* GOODBYE */
-function finalGoodbye(){
-const g=document.getElementById("goodbye-screen");
-g.style.display="flex";
-setTimeout(()=>{document.body.innerHTML=""},6000);
-}
-</script>
+        // Goodbye Logic
+        function showFinalGoodbye() {
+            document.getElementById('final-screen').style.display = 'flex';
+        }
 
+        function dissolveEverything() {
+            document.body.style.transition = '2s';
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.innerHTML = '';
+                document.body.style.background = 'black';
+            }, 2000);
+        }
+
+    </script>
 </body>
 </html>
