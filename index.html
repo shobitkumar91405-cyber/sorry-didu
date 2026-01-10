@@ -1,208 +1,457 @@
 <!DOCTYPE html>
-<html lang="en">
+​<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram | DM</title>
-    <style>
-        :root { --insta-blue: #0095f6; --bg-dark: #000; --chat-received: #262626; }
-        body, html { margin: 0; padding: 0; background: var(--bg-dark); color: white; font-family: sans-serif; overflow-x: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Goodbye Trishika🥀</title>
+<style>
+:root {
+--bg-color: #0b0e14;
+--accent: #8b0000;
+--text-color: #e0e0e0;
+--dim-text: #888;
+}    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        /* Rain Animation */
-        .rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .drop { position: absolute; background: rgba(255, 255, 255, 0.15); width: 1px; height: 20px; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(110vh); } }
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        overflow-x: hidden;
+        height: 100vh;
+    }
 
-        /* App Layout */
-        #app { position: relative; z-index: 10; max-width: 500px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; border-right: 0.5px solid #333; border-left: 0.5px solid #333; }
-        
-        /* Stories Header */
-        .stories { display: flex; gap: 15px; padding: 10px; border-bottom: 0.5px solid #333; overflow-x: auto; }
-        .story-circle { min-width: 60px; height: 60px; border-radius: 50%; border: 2px solid #d62976; background: #333; }
+    /* Rain Effect */
+    #rain-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1000;
+    }
 
-        /* Chat Window */
-        .header { padding: 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid #333; }
-        .profile-info { display: flex; align-items: center; gap: 10px; }
-        .pfp { width: 35px; height: 35px; border-radius: 50%; background: url('photo1.jpg') center/cover; transition: 0.5s; }
-        
-        #chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-        .bubble { max-width: 75%; padding: 12px 16px; border-radius: 22px; font-size: 14px; line-height: 1.4; position: relative; }
-        .rec { background: var(--chat-received); align-self: flex-start; }
-        .sen { background: var(--insta-blue); align-self: flex-end; }
-        .typing { font-size: 12px; color: #a8a8a8; margin-left: 10px; display: none; }
-        .seen { font-size: 10px; color: #a8a8a8; align-self: flex-end; margin-top: -8px; }
+    .drop {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        width: 1px;
+        height: 80px;
+        top: -100px;
+        animation: fall linear infinite;
+    }
 
-        /* Call Screen */
-        #call-ui { position: fixed; inset: 0; background: rgba(10,10,10,0.98); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .call-pfp { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 20px; border: 2px solid #333; }
-        .controls { display: flex; gap: 60px; margin-top: 50px; }
-        .btn { width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 24px; }
-        .ans { background: #4cd964; } .rej { background: #ff3b30; transform: rotate(135deg); }
+    @keyframes fall {
+        to { transform: translateY(110vh); }
+    }
 
-        /* Gallery */
-        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 20px; }
-        .gallery img, .gallery video { width: 100%; aspect-ratio: 1/1; object-fit: cover; filter: grayscale(50%); cursor: pointer; transition: 0.3s; }
-        .gallery img:hover { filter: grayscale(0%); }
+    /* Call Screen */
+    #call-screen {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at center, #1a1e26 0%, #0b0e14 100%);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 80px 20px;
+        transition: opacity 1s ease;
+    }
 
-        /* Footer Input */
-        .footer { padding: 15px; border-top: 0.5px solid #333; display: flex; gap: 10px; }
-        input { flex: 1; background: transparent; border: 1px solid #444; border-radius: 20px; padding: 8px 15px; color: white; outline: none; }
-    </style>
-</head>
-<body>
+    .caller-info {
+        text-align: center;
+        animation: pulse 2s infinite;
+    }
 
-    <div class="rain" id="rain"></div>
-    <audio id="master-bg" src="sad-bg.mp3" loop></audio>
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
 
-    <div id="app">
-        <div class="stories" id="story-tray">
-            <div class="story-circle"></div>
-            <div class="story-circle" style="border-color: #555;"></div>
-            <div class="story-circle" style="border-color: #555;"></div>
-        </div>
+    .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: #222;
+        margin-bottom: 20px;
+        border: 2px solid var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+    }
 
-        <div class="header">
-            <div class="profile-info">
-                <div class="pfp" id="main-pfp"></div>
-                <div>
-                    <b id="user-title">Trishika</b><br>
-                    <small style="color: #00f641;" id="status-text">Active Now</small>
-                </div>
-            </div>
-            <div style="font-size: 20px;">📞 &nbsp; 📹</div>
-        </div>
+    .accept-btn {
+        width: 70px;
+        height: 70px;
+        background: #2ecc71;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+    }
 
-        <div id="chat-container">
-            </div>
-        <div class="typing" id="typing-ui">Trishika is typing...</div>
+    /* Dialogue Box */
+    #dialogue-container {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 2100;
+        padding: 40px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 
-        <div id="media-area" class="gallery" style="display:none;"></div>
+    .typewriter {
+        font-size: 1.5rem;
+        line-height: 1.6;
+        min-height: 3em;
+    }
 
-        <div class="footer" id="input-bar">
-            <input type="text" placeholder="Message..." id="msg-input">
-            <button id="send-btn" style="background:none; border:none; color:var(--insta-blue); font-weight:bold;">Send</button>
-        </div>
+    /* Main Content */
+    #main-content {
+        display: none;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 2s ease;
+    }
+
+    .section-title {
+        color: var(--accent);
+        margin: 40px 0 20px;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    /* Video Cards */
+    .video-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .video-card {
+        background: #161a22;
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid #333;
+    }
+
+    video {
+        width: 100%;
+        display: block;
+    }
+
+    /* Photo Gallery */
+    .photo-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding-bottom: 15px;
+        scrollbar-width: none;
+    }
+
+    .photo-card {
+        flex: 0 0 200px;
+        height: 250px;
+        background: #222;
+        border-radius: 10px;
+        object-fit: cover;
+        filter: grayscale(80%);
+        transition: 0.5s;
+    }
+
+    /* Instagram Block */
+    .insta-block {
+        background: #161a22;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    /* Fake Chat */
+    .chat-box {
+        background: #0d1117;
+        border-radius: 15px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .msg {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+
+    .sent {
+        background: #30363d;
+        margin-left: auto;
+        border-bottom-right-radius: 2px;
+    }
+
+    .status {
+        font-size: 0.7rem;
+        color: var(--dim-text);
+        text-align: right;
+    }
+
+    /* Final Screen */
+    #final-screen {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 3000;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .let-go-btn {
+        margin-top: 30px;
+        padding: 15px 40px;
+        background: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        border-radius: 30px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+    }
+
+    .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+</style></head>
+<body><div id="rain-container"></div>
+
+<section id="call-screen">
+    <div class="caller-info">
+        <div class="avatar">🥀</div>
+        <h2 style="font-size: 1.8rem;">Trishika🥀</h2>
+        <p style="color: var(--dim-text); margin-top: 10px;">Calling...</p>
+    </div>
+    <div class="accept-btn" onclick="startExperience()">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/></svg>
+    </div>
+</section>
+
+<div id="dialogue-container">
+    <div id="typewriter-text" class="typewriter"></div>
+</div>
+
+<main id="main-content">
+    <div class="insta-block">
+        <div class="avatar" style="width: 80px; height: 80px; font-size: 1.5rem; margin: 0 auto 15px;">🥀</div>
+        <h3>Trishika🥀</h3>
+        <p style="color: var(--dim-text); font-size: 0.8rem; margin: 10px 0;">User not found</p>
+        <p style="font-size: 0.9rem; color: #ff4d4d;">You are blocked</p>Section Title
     </div>
 
-    <div id="call-ui">
-        <div class="call-pfp"></div>
-        <h1 id="caller-name">Trishika</h1>
-        <p id="call-timer">Instagram Audio...</p>
-        <div class="controls">
-            <div class="btn rej">📞</div>
-            <div class="btn ans">📞</div>
-        </div>
+    <h2 class="section-title">Memories</h2>
+    <div class="video-grid">
+        <div class="video-card"><video src="video1.mp4" playsinline onplay="handleVideoPlay(this)" onpause="handleVideoEnd()" onended="handleVideoEnd()"></video></div>
+        <div class="video-card"><video src="video2.mp4" playsinline onplay="handleVideoPlay(this)" onpause="handleVideoEnd()" onended="handleVideoEnd()"></video></div>
+        <div class="video-card"><video src="video3.mp4" playsinline onplay="handleVideoPlay(this)" onpause="handleVideoEnd()" onended="handleVideoEnd()"></video></div>
+        <div class="video-card"><video src="video4.mp4" playsinline onplay="handleVideoPlay(this)" onpause="handleVideoEnd()" onended="handleVideoEnd()"></video></div>
     </div>
 
-    <script>
-        const chat = document.getElementById('chat-container');
-        const typing = document.getElementById('typing-ui');
-        const bgMusic = document.getElementById('master-bg');
-        
-        // Rain Drops
-        for(let i=0; i<80; i++) {
-            let drop = document.createElement('div');
+    <h2 class="section-title">Frozen Moments</h2>
+    <div class="photo-scroll">
+        <img src="photo1.jpg" class="photo-card" alt="Memory">
+        <img src="photo2.jpg" class="photo-card" alt="Memory">
+        <img src="photo3.jpg" class="photo-card" alt="Memory">
+        <img src="photo4.jpg" class="photo-card" alt="Memory">
+        <img src="photo5.jpg" class="photo-card" alt="Memory">
+        <img src="photo6.jpg" class="photo-card" alt="Memory">
+        <img src="photo7.jpg" class="photo-card" alt="Memory">
+        <img src="photo8.jpg" class="photo-card" alt="Memory">
+        <img src="photo9.jpg" class="photo-card" alt="Memory">
+        <img src="photo10.jpg" class="photo-card" alt="Memory">
+    </div>
+
+    <h2 class="section-title">The Unsent Texts</h2>
+    <div class="chat-box">
+        <div class="msg sent">Trishika, please pick up. I'm sorry.</div>
+        <div class="msg sent">Ek baar baat toh kar lo...</div>
+        <div class="status">Seen ✔✔</div>
+        <div style="font-size: 0.7rem; color: var(--accent); margin-top: 20px;">Last seen: 2 years ago</div>
+    </div>
+
+    <div style="text-align: center; margin: 50px 0;">
+        <p id="looping-text" style="font-style: italic; color: var(--dim-text); min-height: 40px;"></p>
+    </div>
+
+    <button class="let-go-btn" style="width: 100%; margin-bottom: 100px;" onclick="showFinalGoodbye()">Let You Go 🥀</button>
+</main>
+
+<div id="final-screen">
+    <h1 style="color: var(--accent); font-weight: 300;">Good Bye, Trishika🥀</h1>
+    <p style="margin-top: 20px; color: var(--dim-text);">Aaj bhi pyaar hai...<br>par ab haq nahi...</p>
+    <button class="let-go-btn" onclick="location.reload()">End Story</button>
+</div>
+
+<audio id="bg-music" src="newsong.mp3" loop></audio>
+<audio id="broken-music" src="broken.mp3"></audio>
+
+<script>
+    const bgMusic = document.getElementById('bg-music');
+    const brokenMusic = document.getElementById('broken-music');
+    const dialogueContainer = document.getElementById('dialogue-container');
+    const typewriterText = document.getElementById('typewriter-text');
+    
+    // Rain Gen
+    function createRain() {
+        const container = document.getElementById('rain-container');
+        for (let i = 0; i < 50; i++) {
+            const drop = document.createElement('div');
             drop.className = 'drop';
             drop.style.left = Math.random() * 100 + 'vw';
-            drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
-            drop.style.opacity = Math.random();
-            document.getElementById('rain').appendChild(drop);
+            drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            container.appendChild(drop);
         }
+    }
+    createRain();
 
-        function appendMsg(text, sender) {
-            let b = document.createElement('div');
-            b.className = `bubble ${sender}`;
-            b.innerText = text;
-            chat.appendChild(b);
-            if(sender === 'sen') {
-                let s = document.createElement('div');
-                s.className = 'seen';
-                s.innerText = 'Seen';
-                chat.appendChild(s);
+    function fadeAudio(audio, targetVol, duration = 1000) {
+        const startVol = audio.volume;
+        const diff = targetVol - startVol;
+        const steps = 20;
+        const stepTime = duration / steps;
+        let currentStep = 0;
+
+        const interval = setInterval(() => {
+            currentStep++;
+            audio.volume = startVol + (diff * (currentStep / steps));
+            if (currentStep >= steps) {
+                audio.volume = targetVol;
+                clearInterval(interval);
             }
-            chat.scrollTop = chat.scrollHeight;
+        }, stepTime);
+    }
+
+    async function typeMessage(text, delay = 70) {
+        typewriterText.innerHTML = '';
+        for (let char of text) {
+            typewriterText.innerHTML += char;
+            await new Promise(r => setTimeout(r, delay));
         }
+        await new Promise(r => setTimeout(r, 1500));
+    }
 
-        // Logic Start
-        window.onload = () => {
-            setTimeout(() => {
-                bgMusic.play();
-                typing.style.display = 'block';
-                setTimeout(() => {
-                    typing.style.display = 'none';
-                    appendMsg("Hii SivaSingh... Kaise ho?", "rec");
-                }, 2000);
-            }, 1000);
-        };
+    async function startExperience() {
+        document.getElementById('call-screen').style.opacity = '0';
+        setTimeout(() => document.getElementById('call-screen').style.display = 'none', 1000);
+        
+        bgMusic.volume = 0;
+        bgMusic.play();
+        fadeAudio(bgMusic, 0.4);
 
-        document.getElementById('send-btn').onclick = () => {
-            let val = document.getElementById('msg-input').value;
-            if(!val) return;
-            appendMsg(val, "sen");
-            document.getElementById('msg-input').value = "";
-            
-            // Story Progression
-            setTimeout(() => {
-                document.getElementById('call-ui').style.display = 'flex';
-            }, 2000);
-        };
+        dialogueContainer.style.display = 'flex';
+        
+        await typeMessage("Tum: Hello...");
+        await typeMessage("Trishika🥀: Haan... sun rahi hoon");
+        fadeAudio(bgMusic, 0.7);
+        await typeMessage("Trishika🥀: Bas kehna tha ki...");
+        
+        // Heartbreak Turn
+        document.body.classList.add('shake');
+        fadeAudio(bgMusic, 0.1, 200);
+        await typeMessage("Trishika🥀: Tum badal gaye ho...");
+        
+        setTimeout(() => {
+            document.body.classList.remove('shake');
+            fadeAudio(bgMusic, 0.4);
+        }, 500);
 
-        document.querySelector('.ans').onclick = () => {
-            document.getElementById('call-timer').innerText = "00:01";
-            let sec = 1;
-            let timer = setInterval(() => {
-                sec++;
-                document.getElementById('call-timer').innerText = `00:0${sec}`;
-                if(sec > 5) {
-                    clearInterval(timer);
-                    endCall();
-                }
-            }, 1000);
-        };
+        await typeMessage("Trishika🥀: Ab aur nahi ho payega. Bye.");
+        
+        // End Call
+        brokenMusic.play();
+        dialogueContainer.style.background = '#000';
+        typewriterText.innerHTML = "";
+        await new Promise(r => setTimeout(r, 2000));
+        
+        await typeMessage("Call kat gayi... par dil nahi...");
+        
+        dialogueContainer.style.opacity = '0';
+        setTimeout(() => {
+            dialogueContainer.style.display = 'none';
+            showMainContent();
+        }, 1000);
+    }
 
-        function endCall() {
-            document.getElementById('call-ui').style.display = 'none';
-            appendMsg("Trishika, suno to...", "sen");
-            setTimeout(() => {
-                typing.style.display = 'block';
-                setTimeout(() => {
-                    typing.style.display = 'none';
-                    appendMsg("Nahi Siva, ab kuch nahi bacha. Hum dost bhi nahi reh sakte.", "rec");
-                    appendMsg("Goodbye forever. 💔", "rec");
-                    breakupAction();
-                }, 3000);
-            }, 1500);
-        }
+    function showMainContent() {
+        const main = document.getElementById('main-content');
+        main.style.display = 'block';
+        setTimeout(() => main.style.opacity = '1', 100);
+        startLoopingText();
+    }
 
-        function breakupAction() {
-            setTimeout(() => {
-                document.getElementById('user-title').innerText = "Instagram User";
-                document.getElementById('status-text').innerText = "Unavailable";
-                document.getElementById('main-pfp').style.background = "#333";
-                document.getElementById('input-bar').innerHTML = "<p style='color:#a8a8a8; text-align:center; width:100%'>You can no longer message this account.</p>";
-                loadGallery();
-            }, 2000);
-        }
-
-        function loadGallery() {
-            const gal = document.getElementById('media-area');
-            gal.style.display = 'grid';
-            
-            for(let i=1; i<=10; i++) {
-                let img = document.createElement('img');
-                img.src = `photo${i}.jpg`;
-                gal.appendChild(img);
+    function handleVideoPlay(currentVideo) {
+        const videos = document.querySelectorAll('video');
+        videos.forEach(v => {
+            if (v !== currentVideo) {
+                v.pause();
+                v.currentTime = 0;
             }
-            for(let i=1; i<=4; i++) {
-                let v = document.createElement('video');
-                v.src = `video${i}.mp4`;
-                v.onclick = function() {
-                    if(this.paused) { bgMusic.pause(); this.play(); }
-                    else { this.pause(); bgMusic.play(); }
-                };
-                gal.appendChild(v);
-            }
+        });
+        fadeAudio(bgMusic, 0);
+        setTimeout(() => bgMusic.pause(), 1000);
+    }
+
+    function handleVideoEnd() {
+        bgMusic.play();
+        fadeAudio(bgMusic, 0.7);
+    }
+
+    async function startLoopingText() {
+        const lines = [
+            "I still check your profile...",
+            "Waiting for a text that will never come.",
+            "Blocked everywhere, except in my heart.",
+            "You moved on. I'm still here."
+        ];
+        let i = 0;
+        const el = document.getElementById('looping-text');
+        while(true) {
+            el.style.opacity = '0';
+            await new Promise(r => setTimeout(r, 500));
+            el.innerText = lines[i];
+            el.style.opacity = '1';
+            await new Promise(r => setTimeout(r, 3000));
+            i = (i + 1) % lines.length;
         }
-    </script>
-</body>
-</html>
+    }
+
+    function showFinalGoodbye() {
+        const final = document.getElementById('final-screen');
+        final.style.display = 'flex';
+        fadeAudio(bgMusic, 0, 3000);
+        setTimeout(() => {
+            bgMusic.pause();
+        }, 3100);
+    }
+</script></head>
+<body>
