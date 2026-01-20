@@ -1,332 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Forever Valentine 💖</title>
-    <style>
-        /* --- CSS STYLES --- */
-        :root {
-            --pink: #ffafbd;
-            --lavender: #e2d1f9;
-            --cream: #fff0f5;
-            --deep-pink: #ff4d6d;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Khushi 💖</title>
+<style>
+:root {
+--pink: #ffafbd;
+--peach: #ffc3a0;
+--cream: #fff5f5;
+--glass: rgba(255, 255, 255, 0.45);
+--border: rgba(255, 255, 255, 0.6);
+}
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    body {
+        background: linear-gradient(135deg, var(--pink), var(--peach), var(--cream));
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
 
-        body {
-            background: linear-gradient(135deg, var(--pink), var(--lavender));
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #4a4a4a;
-        }
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-        /* Full Screen Section Management */
-        .section {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            transform: translateY(20px);
-        }
+    .header {
+        position: fixed;
+        top: 20px;
+        text-align: center;
+        z-index: 100;
+        width: 100%;
+        font-size: 14px;
+        color: #d63384;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    }
 
-        .section.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
+    .flower-container {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 150px;
+        z-index: 1;
+        pointer-events: none;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+    }
 
-        /* Background Floating Hearts */
-        .bg-hearts {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
+    .flower {
+        position: relative;
+        transform-origin: bottom center;
+        animation: sway 4s ease-in-out infinite;
+    }
 
-        .heart-particle {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.6);
-            animation: float 6s infinite linear;
-        }
+    .stem {
+        width: 4px;
+        height: 80px;
+        background: #4d7c0f;
+        border-radius: 2px;
+    }
 
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
+    .petal {
+        position: absolute;
+        top: -15px;
+        left: -13px;
+        width: 30px;
+        height: 30px;
+        background: #ff85a2;
+        border-radius: 50% 50% 0 50%;
+        transform: rotate(45deg);
+        box-shadow: 0 0 15px rgba(255,133,162,0.5);
+        animation: pulse 2s ease-in-out infinite;
+    }
 
-        /* Buttons & UI Components */
-        .btn-romantic {
-            background-color: var(--deep-pink);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
-            transition: transform 0.3s;
-            margin-top: 20px;
-        }
+    .petal::after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: #ff85a2;
+        border-radius: 50% 50% 50% 0;
+        left: 5px;
+        top: -5px;
+    }
 
-        .btn-romantic:hover {
-            transform: scale(1.1);
-        }
+    @keyframes sway {
+        0%, 100% { transform: rotate(-2deg); }
+        50% { transform: rotate(2deg); }
+    }
 
-        /* Page 2: Message Cards */
-        .cards-container {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    @keyframes pulse {
+        0%, 100% { transform: rotate(45deg) scale(1); }
+        50% { transform: rotate(45deg) scale(1.1); }
+    }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.5s ease;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
+    .page {
+        position: absolute;
+        width: 90%;
+        max-width: 400px;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        z-index: 10;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
 
-        .card.opened {
-            transform: scale(1.2) rotate(5deg);
-            background: var(--cream);
-            color: var(--deep-pink);
-            border: 2px solid var(--deep-pink);
-        }
+    .page.active {
+        display: flex;
+        opacity: 1;
+        transform: scale(1);
+    }
 
-        /* Page 4: Envelope Animation */
-        .envelope-wrapper {
-            position: relative;
-            width: 280px;
-            height: 180px;
-            background: #f08080;
-            margin-top: 50px;
-            cursor: pointer;
-        }
+    .card {
+        background: var(--glass);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--border);
+        border-radius: 25px;
+        padding: 25px;
+        width: 100%;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
 
-        .letter {
-            position: absolute;
-            bottom: 0;
-            left: 10px;
-            width: 260px;
-            height: 160px;
-            background: white;
-            padding: 15px;
-            transition: transform 0.5s;
-            z-index: 1;
-            font-size: 0.8rem;
-            overflow-y: auto;
-        }
+    .card.open { transform: translateY(-10px) rotateX(10deg); }
 
-        .envelope-wrapper.open .letter {
-            transform: translateY(-100px);
-            height: 250px;
-            z-index: 10;
-        }
+    .card-floral {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        opacity: 0.6;
+    }
+    .top-l { top: 5px; left: 5px; }
+    .top-r { top: 5px; right: 5px; transform: rotate(90deg); }
 
-        /* Page 5: Audio Player */
-        .player-box {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 20px;
-            width: 80%;
-            max-width: 300px;
-        }
+    .btn {
+        background: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        color: #d63384;
+        font-weight: bold;
+        margin-top: 20px;
+        box-shadow: 0 5px 15px rgba(214, 51, 132, 0.2);
+        cursor: pointer;
+    }
 
-        /* Page 6: Video */
-        video {
-            width: 90%;
-            max-width: 400px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+    .gif-main { width: 120px; height: 120px; border-radius: 15px; margin-bottom: 15px; object-fit: cover; }
+    .gif-sm { width: 80px; height: 80px; border-radius: 10px; margin: 5px; }
 
-        /* Page 7: Final Heart */
-        .huge-heart {
-            font-size: 100px;
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-        }
+    video {
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+    h1 { font-size: 24px; color: #7d1935; margin-bottom: 15px; }
+    p { font-size: 18px; color: #8e2de2; line-height: 1.6; }
 
-        .gif-img {
-            width: 150px;
-            margin-bottom: 20px;
-        }
-    </style>
+    .grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+
+    #audio-toggle {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 1000;
+        background: white;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+
+    .burst-heart {
+        position: absolute;
+        pointer-events: none;
+        animation: fly-out 1s forwards;
+    }
+
+    @keyframes fly-out {
+        to { transform: translate(var(--tw), var(--th)) scale(0); opacity: 0; }
+    }
+</style>
+
 </head>
 <body>
+<div class="header">Made by sivasingh 💖<br>@smss1708</div>
 
-    <div class="bg-hearts" id="bgHearts"></div>
+<canvas id="bg-canvas"></canvas>
 
-    <section class="section active" id="page1">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L4lvBps67K0bV9pAqi/giphy.gif" class="gif-img" alt="Cute heart">
-        <h1>Little things I want to tell you...</h1>
-        <button class="btn-romantic" onclick="nextPage(2)">Tap to begin 💖</button>
-    </section>
+<div class="flower-container" id="flowers"></div>
 
-    <section class="section" id="page2">
-        <h2>Tap a card to read</h2>
-        <div class="cards-container">
-            <div class="card" onclick="openCard(this, 'You are the reason my heart smiles.')">?</div>
-            <div class="card" onclick="openCard(this, 'With you, everything feels magical.')">?</div>
-            <div class="card" onclick="openCard(this, 'I fall in love with you again every day.')">?</div>
+<div id="audio-toggle">🎵</div>
+
+<div class="page active" id="p0">
+    <div class="card" onclick="nextPage(1)">
+        <div class="card-floral top-l">🌸</div>
+        <div class="card-floral top-r">🌸</div>
+        <img src="intro.gif" class="gif-main">
+        <h1>Hey Khushi 💖</h1>
+        <p>Can we talk for a moment?<br>There’s something special I want to show you…</p>
+        <button class="btn">Open 💌</button>
+    </div>
+</div>
+
+<div class="page" id="p1">
+    <video id="introVid" playsinline>
+        <source src="intro-love.mp4" type="video/mp4">
+    </video>
+</div>
+
+<div class="page" id="p2">
+    <div class="card" onclick="heartBurst(event); nextPage(3)">
+        <img src="rose.gif" class="gif-main">
+        <h1>Khushi 💖</h1>
+        <p>You are the most beautiful feeling my heart has ever known. Every smile of yours feels like home to me.</p>
+    </div>
+</div>
+
+<div class="page" id="p3">
+    <div class="card" onclick="heartBurst(event); nextPage(4)">
+        <div class="grid">
+            <img src="heart1.gif" class="gif-sm">
+            <img src="heart2.gif" class="gif-sm">
         </div>
-        <button class="btn-romantic" onclick="nextPage(3)">Continue 💌</button>
-    </section>
+        <p>Every heartbeat whispers your name. Every moment feels incomplete without you, Khushi.</p>
+    </div>
+</div>
 
-    <section class="section" id="page3">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3JueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/vXo67WZ5fNAnlB0609/giphy.gif" class="gif-img">
-        <h1 style="font-size: 3rem; color: var(--deep-pink);">I'm Sorry ❤️</h1>
-        <p>For every little mistake, I love you more than words.</p>
-        <button class="btn-romantic" onclick="nextPage(4)">Open My Letter</button>
-    </section>
-
-    <section class="section" id="page4">
-        <div class="envelope-wrapper" id="envelope" onclick="toggleLetter()">
-            <div class="letter">
-                <h3>My Dearest,</h3>
-                <p>Every moment spent with you is like a beautiful dream. I want to hold your hand through every season of life. You are my greatest adventure and my favorite "I love you".</p>
-            </div>
+<div class="page" id="p4">
+    <div class="card" onclick="heartBurst(event); nextPage(5)">
+        <div class="grid">
+            <img src="hug.gif" class="gif-sm">
+            <img src="kiss.gif" class="gif-sm">
+            <img src="cute.gif" class="gif-sm">
         </div>
-        <p style="margin-top: 20px;">(Tap the envelope to open)</p>
-        <button class="btn-romantic" onclick="nextPage(5)">Listen to This</button>
-    </section>
+        <p>You are my comfort.<br>You are my happiness.<br>You are my forever.</p>
+    </div>
+</div>
 
-    <section class="section" id="page5">
-        <div class="player-box">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHJueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueGZueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKoWXlo3M1nKS6A/giphy.gif" width="80">
-            <h3 id="songName">Romantic Melody.mp3</h3>
-            <audio id="mainAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" controls></audio>
-        </div>
-        <button class="btn-romantic" onclick="nextPage(6)">Watch This Video</button>
-    </section>
+<div class="page" id="p5">
+    <div class="card" onclick="heartBurst(event); nextPage(6)">
+        <img src="promise.gif" class="gif-main">
+        <h1>Khushi 💖</h1>
+        <p>Not just today, but every single day, I choose you — again and again.</p>
+    </div>
+</div>
 
-    <section class="section" id="page6">
-        <h2>A Little Video for You</h2>
-        <video id="romanticVideo" controls>
-            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <button class="btn-romantic" onclick="nextPage(7)">Final Surprise</button>
-    </section>
+<div class="page" id="p6">
+    <div class="card" onclick="heartBurst(event)">
+        <img src="endlove.gif" class="gif-main">
+        <h1 style="font-size: 28px;">Will you stay with me forever, Khushi? 💖</h1>
+    </div>
+</div>
 
-    <section class="section" id="page7">
-        <div class="huge-heart" onclick="burstHearts()">💖</div>
-        <div id="quoteContainer">
-            <p>"With you, time stops."</p>
-        </div>
-        <h2 style="margin-top: 20px;">Happy Valentine's Day!</h2>
-    </section>
+<audio id="bgMusic" loop>
+    <source src="tere-liye.mp3" type="audio/mpeg">
+</audio>
 
-    <script>
-        // --- 1. Page Navigation Logic ---
-        function nextPage(pageNumber) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById('page' + pageNumber).classList.add('active');
-            
-            // Auto play audio on Page 5
-            if(pageNumber === 5) {
-                const audio = document.getElementById('mainAudio');
-                audio.play().catch(e => console.log("User interaction required for audio"));
-            }
+<script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    const music = document.getElementById('bgMusic');
+    const video = document.getElementById('introVid');
+    const toggle = document.getElementById('audio-toggle');
+    let flowersCreated = false;
+
+    music.volume = 0.35;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.onresize = resize;
+    resize();
+
+    // Hearts & Butterflies Particles
+    class Particle {
+        constructor(type) {
+            this.type = type; // 0: heart, 1: butterfly
+            this.reset();
         }
-
-        // --- 2. Floating Background Hearts ---
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-particle');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.duration = (Math.random() * 3 + 3) + 's';
-            document.getElementById('bgHearts').appendChild(heart);
-
-            setTimeout(() => { heart.remove(); }, 6000);
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 20;
+            this.size = Math.random() * 15 + 10;
+            this.speedY = Math.random() * 1 + 0.5;
+            this.speedX = Math.sin(Math.random() * 5);
+            this.opacity = Math.random() * 0.5 + 0.5;
+            this.char = this.type === 0 ? '💖' : '🦋';
         }
-        setInterval(createHeart, 300);
-
-        // --- 3. Message Cards Logic ---
-        function openCard(element, message) {
-            element.innerHTML = message;
-            element.classList.add('opened');
-            // Mini burst effect logic can be added here
+        update() {
+            this.y -= this.speedY;
+            this.x += Math.sin(this.y / 30) * 1;
+            if (this.y < -20) this.reset();
         }
-
-        // --- 4. Envelope Logic ---
-        function toggleLetter() {
-            document.getElementById('envelope').classList.toggle('open');
+        draw() {
+            ctx.globalAlpha = this.opacity;
+            ctx.font = `${this.size}px serif`;
+            ctx.fillText(this.char, this.x, this.y);
         }
+    }
 
-        // --- 5. Audio/Video Sync Logic ---
-        const mainAudio = document.getElementById('mainAudio');
-        const romanticVideo = document.getElementById('romanticVideo');
+    const particles = Array.from({ length: 25 }, (_, i) => new Particle(i % 2));
 
-        // Pause audio when video starts
-        romanticVideo.onplay = () => {
-            mainAudio.pause();
-        };
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
 
-        // Resume audio when video ends
-        romanticVideo.onended = () => {
-            mainAudio.play();
-        };
-
-        // --- 6. Final Page Burst ---
-        const quotes = [
-            "Your smile lights up my world.",
-            "You are my forever.",
-            "I love you to the moon and back.",
-            "You are my favorite person."
-        ];
-
-        function burstHearts() {
-            const container = document.getElementById('quoteContainer');
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            container.innerHTML = `<h3 style="color:var(--deep-pink); animation: fadeIn 1s;">${randomQuote}</h3>`;
-            
-            // Add a temporary burst of many hearts
-            for(let i=0; i<15; i++) {
-                createHeart();
-            }
+    function createFlowers() {
+        const container = document.getElementById('flowers');
+        for(let i=0; i<6; i++) {
+            const f = document.createElement('div');
+            f.className = 'flower';
+            f.innerHTML = `<div class="petal"></div><div class="stem"></div>`;
+            f.style.animationDelay = `${i * 0.5}s`;
+            container.appendChild(f);
         }
-    </script>
+    }
+    createFlowers();
+
+    function heartBurst(e) {
+        for(let i=0; i<15; i++) {
+            const h = document.createElement('div');
+            h.className = 'burst-heart';
+            h.innerHTML = '💖';
+            h.style.left = e.clientX + 'px';
+            h.style.top = e.clientY + 'px';
+            h.style.setProperty('--tw', (Math.random()*200 - 100) + 'px');
+            h.style.setProperty('--th', (Math.random()*200 - 100) + 'px');
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1000);
+        }
+    }
+
+    let currentPage = 0;
+    function nextPage(index) {
+        if(currentPage === 0) music.play();
+        
+        const current = document.getElementById('p' + currentPage);
+        const next = document.getElementById('p' + index);
+
+        current.classList.remove('active');
+        setTimeout(() => {
+            current.style.display = 'none';
+            next.style.display = 'flex';
+            setTimeout(() => next.classList.add('active'), 50);
+        }, 800);
+
+        currentPage = index;
+
+        if(index === 1) {
+            music.pause();
+            video.play();
+            video.onended = () => {
+                next.classList.remove('active');
+                setTimeout(() => {
+                    next.style.display = 'none';
+                    music.play();
+                    nextPage(2);
+                }, 800);
+            };
+        }
+        
+        if(index === 6) {
+            particles.forEach(p => p.speedY *= 0.5);
+        }
+    }
+
+    toggle.onclick = () => {
+        music.muted = !music.muted;
+        toggle.innerText = music.muted ? '🔇' : '🎵';
+    };
+
+    document.body.addEventListener('click', () => {
+        if (music.paused && currentPage !== 1) music.play();
+    }, { once: true });
+</script>
+
 </body>
 </html>
