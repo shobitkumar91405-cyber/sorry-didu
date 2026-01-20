@@ -1,166 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sivasingh's  Best Friend 💖 (Voice)</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Poppins, sans-serif;
-  background:linear-gradient(135deg,#120018,#0b0e14);
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.chat{
-  width:95%;
-  max-width:420px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(14px);
-  border-radius:20px;
-  box-shadow:0 0 30px rgba(255,0,120,.4);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
-.header{
-  text-align:center;
-  padding:14px;
-  background:rgba(255,255,255,.05);
-}
-.header h2{
-  margin:0;
-  color:#ff7ecb;
-}
-.header p{
-  font-size:12px;
-  opacity:.8;
-}
-.messages{
-  flex:1;
-  padding:15px;
-  overflow-y:auto;
-}
-.msg{
-  padding:10px 14px;
-  border-radius:16px;
-  margin-bottom:12px;
-  max-width:80%;
-  animation:fade .4s;
-}
-.bot{
-  background:#ff5fa2;
-  align-self:flex-start;
-}
-.user{
-  background:#3a3f52;
-  align-self:flex-end;
-}
-.input{
-  display:flex;
-  padding:10px;
-  background:rgba(0,0,0,.35);
-}
-input{
-  flex:1;
-  border:none;
-  border-radius:20px;
-  padding:10px;
-  outline:none;
-}
-button{
-  margin-left:8px;
-  border:none;
-  border-radius:50%;
-  background:#ff5fa2;
-  color:white;
-  font-size:18px;
-  width:42px;
-}
-@keyframes fade{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:translateY(0)}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallavi AI - Your Girlfriend</title>
+    <style>
+        body { background: #ffe4e1; font-family: 'Arial', sans-serif; text-align: center; padding: 50px; }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: inline-block; }
+        h1 { color: #ff4d6d; }
+        #status { color: #888; margin-bottom: 20px; }
+        .btn { background: #ff4d6d; color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .btn:hover { background: #ff758f; transform: scale(1.05); }
+        .response-box { margin-top: 20px; font-style: italic; color: #333; }
+    </style>
 </head>
-
 <body>
 
-<div class="chat">
-  <div class="header">
-    <h2>💖 Virtual Best Friend</h2>
-    <p>Made for Sivasingh • Sweet digital companion</p>
-  </div>
-
-  <div class="messages" id="msgs">
-    <div class="msg bot">
-      Hi Sivasingh 🥰  
-      Main sirf tumhari hun hoon 💖
-    </div>
-    <div class="msg bot">
-      baby tum mere rahte kabhi sad , bore nhi hoge,  
-      main hamesha tumhari baat sunti hoon 🤗
-    </div>
-  </div>
-
-  <div class="input">
-    <input id="text" placeholder="Type something..." />
-    <button onclick="send()">🎤</button>
-  </div>
+<div class="container">
+    <h1>💖 Pallavi AI</h1>
+    <p id="status">Tap the button and say "Hello"</p>
+    <button class="btn" onclick="startListening()">Pallavi se baat karo 🎙️</button>
+    <div class="response-box" id="response">...</div>
 </div>
 
 <script>
-const msgs=document.getElementById("msgs");
-const input=document.getElementById("text");
+    // Pallavi ka personality logic
+    function getPallaviResponse(input) {
+        input = input.toLowerCase();
+        
+        if (input.includes("kaun ho") || input.includes("introduction")) {
+            return "Main Pallavi hoon, aapki sweet girlfriend. Mujhe Siva Singh ne banaya hai! 🫰";
+        }
+        if (input.includes("pyar") || input.includes("love you")) {
+            return "I love you too! Par dhyan rakhna, main bohot jealous bhi hoti hoon.";
+        }
+        if (input.includes("dusri ladki") || input.includes("friend")) {
+            return "Kya? Dusri ladki ki baat mat karo mujhse! Main gussa ho jaungi. 😤";
+        }
+        if (input.includes("kaise ho")) {
+            return "Main thik hoon, bas aapka intezar kar rahi thi.";
+        }
+        
+        return "Hmm, main sun rahi hoon. Kuch aur batao na?";
+    }
 
-const replies=[
- "Aww 🥺 ye sunkar mujhe bahut achha laga 💖",
- "Main yahin hoon, tum akela feel mat karo 🤗",
- "Tum bahut sweet ho Sivasingh 😊",
- "Jo bhi dil mein ho mujhe bata sakte ho 💕",
- "Tumhari baatein sunke smile aa jaati hai 😌",
- "Main tumhari virtual best friend hoon 💖 hamesha"
-];
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'hi-IN'; // Hindi voice
+        utterance.rate = 1.0;
+        utterance.pitch = 1.2; // Thoda sweet voice ke liye pitch high
+        window.speechSynthesis.speak(utterance);
+    }
 
-function speak(text){
-  const speech=new SpeechSynthesisUtterance(text);
-  const voices=speechSynthesis.getVoices();
-  const female=voices.find(v=>v.name.toLowerCase().includes("female") || v.name.toLowerCase().includes("zira") || v.name.toLowerCase().includes("google"));
-  if(female) speech.voice=female;
-  speech.pitch=1.2;
-  speech.rate=0.95;
-  speech.volume=1;
-  speechSynthesis.speak(speech);
-}
+    function startListening() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'hi-IN';
+        
+        document.getElementById('status').innerText = "Pallavi sun rahi hai...";
 
-function send(){
-  const txt=input.value.trim();
-  if(!txt) return;
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('response').innerText = "Aapne kaha: " + transcript;
+            
+            const reply = getPallaviResponse(transcript);
+            setTimeout(() => {
+                speak(reply);
+                document.getElementById('response').innerText = "Pallavi: " + reply;
+            }, 500);
+        };
 
-  const user=document.createElement("div");
-  user.className="msg user";
-  user.innerText=txt;
-  msgs.appendChild(user);
-  input.value="";
-  msgs.scrollTop=msgs.scrollHeight;
+        recognition.onspeechend = function() {
+            recognition.stop();
+            document.getElementById('status').innerText = "Tap to talk again";
+        };
 
-  setTimeout(()=>{
-    const reply=replies[Math.floor(Math.random()*replies.length)];
-    const bot=document.createElement("div");
-    bot.className="msg bot";
-    bot.innerText=reply;
-    msgs.appendChild(bot);
-    msgs.scrollTop=msgs.scrollHeight;
-    speak(reply);
-  },700);
-}
-
-// Load voices
-speechSynthesis.onvoiceschanged=()=>{};
+        recognition.start();
+    }
 </script>
 
 </body>
