@@ -5,256 +5,302 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Dear Morni 💖</title>
     <style>
-        :root { --pink: #ff2d75; --blue: #18ffff; --glass: rgba(255, 255, 255, 0.1); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #050505; color: #fff; overflow: hidden; height: 100vh; width: 100vw; position: fixed; }
-        #canvas-bg { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
-
-        /* Copy Button - Top Level */
-        #copy-overlay {
-            position: fixed; top: 10px; right: 10px; z-index: 10000;
-            background: var(--blue); color: #000; padding: 8px 15px;
-            border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 12px;
-            box-shadow: 0 0 15px var(--blue);
+        :root {
+            --pink: #ff007f;
+            --blue: #00d4ff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glow: 0 0 15px var(--pink);
         }
 
-        /* Header */
-        header { position: fixed; top: 20px; width: 100%; text-align: center; z-index: 1000; }
-        .header-text { font-size: 14px; color: var(--pink); text-shadow: 0 0 10px var(--pink); font-weight: bold; }
-        .insta-box { display: inline-flex; align-items: center; margin-top: 8px; text-decoration: none; color: #fff; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--blue); }
-        .insta-thumb { width: 22px; height: 22px; border-radius: 50%; margin-right: 8px; border: 1px solid #fff; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            background: #050505; font-family: 'Poppins', sans-serif; color: white;
+        }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
         /* Navigation Logic */
-        .container { position: relative; z-index: 10; width: 100%; height: 100%; }
-        .page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.8s ease; padding: 20px; text-align: center; }
-        .active { opacity: 1; visibility: visible; }
+        .page {
+            position: absolute; width: 100%; height: 100%;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px; transition: 0.5s ease-in-out;
+        }
+        .active { display: flex; animation: fadeIn 0.8s forwards; }
 
-        /* Glass Card 3D Effect */
-        .glass-card { background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 30px; width: 95%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); cursor: pointer; perspective: 1000px; }
-        .card-inner { position: relative; width: 100%; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
-        .opened .card-inner { transform: rotateY(-180deg); }
-        .face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-        .back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.9); border-radius: 20px; padding: 20px; border: 1px solid var(--blue); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .neon-p { color: var(--pink); text-shadow: 0 0 10px var(--pink); font-weight: bold; }
-        .neon-b { color: var(--blue); text-shadow: 0 0 10px var(--blue); font-weight: bold; }
-        .msg-text { font-size: 20px; font-weight: bold; line-height: 1.4; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        /* Header */
+        header {
+            position: fixed; top: 20px; width: 100%; z-index: 100;
+            text-shadow: 0 0 10px var(--pink); font-weight: bold;
+        }
+        .insta-id { font-size: 0.9rem; color: var(--blue); margin-top: 5px; }
+        .insta-thumb { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--pink); margin-top: 5px; }
 
-        /* Video logic */
-        #video-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; display: none; }
-        video { width: 100%; height: 100%; object-fit: cover; }
+        /* Glassmorphism */
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 25px;
+            padding: 30px; width: 90%; max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
 
-        /* Proposal Scene */
-        .scene { position: relative; width: 300px; height: 160px; margin-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.1); }
-        .char { position: absolute; bottom: 0; width: 60px; height: 100px; }
-        .boy { left: -80px; filter: drop-shadow(0 0 10px var(--blue)); transition: left 3.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s 3.5s; }
-        .girl { right: 40px; filter: drop-shadow(0 0 10px var(--pink)); }
-        .rose-icon { position: absolute; width: 30px; top: 35px; right: -20px; }
-
-        /* Photo Slider */
-        .slider-3d { width: 180px; height: 260px; position: relative; transform-style: preserve-3d; animation: rotateSlider 15s infinite linear; margin-bottom: 30px; }
-        .slide { position: absolute; width: 100%; height: 100%; border: 2px solid var(--blue); border-radius: 15px; overflow: hidden; box-shadow: 0 0 15px var(--blue); }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
-        .slide:nth-child(1) { transform: rotateY(0deg) translateZ(110px); }
-        .slide:nth-child(2) { transform: rotateY(90deg) translateZ(110px); }
-        .slide:nth-child(3) { transform: rotateY(180deg) translateZ(110px); }
-        .slide:nth-child(4) { transform: rotateY(270deg) translateZ(110px); }
-        @keyframes rotateSlider { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
-
-        .heart { position: fixed; color: var(--pink); pointer-events: none; z-index: 9999; animation: heartBurst 1.5s ease-out forwards; }
-        @keyframes heartBurst { 0% { transform: translateY(0) scale(0); opacity: 1; } 50% { opacity: 1; } 100% { transform: translateY(-250px) rotate(45deg) scale(3); opacity: 0; } }
+        .neon-pink { color: var(--pink); text-shadow: var(--glow); font-size: 2rem; }
+        .neon-blue { color: var(--blue); text-shadow: 0 0 10px var(--blue); }
         
-        .gif-box { width: 130px; height: 130px; margin-bottom: 15px; object-fit: contain; }
-        .btn { background: transparent; border: 2px solid var(--pink); color: #fff; padding: 10px 30px; border-radius: 30px; font-weight: bold; margin-top: 15px; cursor: pointer; box-shadow: 0 0 10px var(--pink); }
+        .msg-text { font-size: 1.1rem; line-height: 1.6; margin: 20px 0; font-weight: 500; }
+
+        /* Buttons */
+        .btn {
+            background: transparent; border: 2px solid var(--pink); color: white;
+            padding: 12px 35px; border-radius: 50px; font-size: 1.1rem;
+            cursor: pointer; box-shadow: var(--glow); transition: 0.3s;
+        }
+
+        /* Video Styling */
+        #video-page video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* SVG REAL ROSE */
+        .rose-container { width: 100px; height: 100px; margin: 0 auto; filter: drop-shadow(0 0 10px red); }
+        
+        /* Proposal Scene */
+        .proposal-scene {
+            position: relative; width: 100%; height: 250px; overflow: hidden;
+            margin-top: 20px;
+        }
+        .boy { position: absolute; left: -100px; bottom: 20px; width: 60px; transition: 3s linear; }
+        .girl { position: absolute; right: 20px; bottom: 20px; width: 60px; filter: drop-shadow(0 0 10px var(--pink)); }
+        
+        /* Photo Slider */
+        .slider-box {
+            width: 200px; height: 280px; position: relative;
+            perspective: 1000px; transform-style: preserve-3d;
+        }
+        .slide {
+            position: absolute; width: 100%; height: 100%;
+            border: 3px solid var(--blue); border-radius: 15px;
+            box-shadow: 0 0 20px var(--blue); object-fit: cover;
+            transition: 1s;
+        }
+
+        /* GIF Section */
+        .gif-display { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 1px solid var(--glass); }
+        
+        .tap-msg { font-weight: bold; font-size: 1.3rem; margin-top: 15px; display: none; }
+
+        /* Copy Button Overlay */
+        #copy-overlay {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+            background: var(--pink); color: white; padding: 10px; border-radius: 5px;
+            cursor: pointer; font-size: 0.8rem;
+        }
     </style>
 </head>
-<body onclick="startApp()">
+<body>
 
-    <div id="copy-overlay" onclick="copyCode(event)">📋 Copy Full Code</div>
+<canvas id="bg-canvas"></canvas>
+<audio id="main-music" src="tere-liye.mp3" loop></audio>
 
-    <header>
-        <div class="header-text">Made by Sivasingh 💖</div>
-        <a href="https://www.instagram.com/smss1708" class="insta-box" target="_blank">
-            <img src="https://ui-avatars.com/api/?name=S&background=ff2d75&color=fff" class="insta-thumb">
-            <span style="font-size: 12px;">@smss1708</span>
-        </a>
-    </header>
+<header>
+    <div>Made by Sivasingh 💖</div>
+    <img src="https://unavatar.io/instagram/smss1708" class="insta-thumb">
+    <div class="insta-id">@smss1708</div>
+</header>
 
-    <canvas id="canvas-bg"></canvas>
-
-    <div id="video-wrap">
-        <video id="pVideo" playsinline><source src="intro-love.mp4" type="video/mp4"></video>
+<div id="p1" class="page active">
+    <div class="glass-card">
+        <img src="intro.gif" class="gif-display">
+        <h1 class="neon-pink">Hey Morni 💖</h1>
+        <p class="msg-text">I have something very special to tell you. Will you listen with your heart?</p>
+        <button class="btn" onclick="startExperience()">Open 💌</button>
     </div>
+</div>
 
-    <div class="container">
-        <div class="page active" id="p1">
-            <div class="glass-card" onclick="openCard(this, 1)">
-                <div class="card-inner">
-                    <div class="face">
-                        <img src="intro.gif" class="gif-box">
-                        <h1 class="neon-p">Hey Morni 🌸</h1>
-                        <p>I built this little world just for you, Betuu ji. Tap to begin our story...</p>
-                        <button class="btn">Open 💌</button>
-                    </div>
-                    <div class="back"><p class="msg-text neon-b">"Every time I see you, my heart skips a beat. You are more than just a crush to me."</p></div>
-                </div>
-            </div>
-        </div>
+<div id="p-video" class="page">
+    <video id="love-video" src="intro-love.mp4" playsinline></video>
+</div>
 
-        <div class="page" id="p2">
-            <div class="glass-card" onclick="openCard(this, 2)">
-                <div class="card-inner">
-                    <div class="face">
-                        <img src="heart1.gif" class="gif-box">
-                        <h2 class="neon-p">A Special Day...</h2>
-                        <p>Morni, do you remember when it all started?</p>
-                    </div>
-                    <div class="back"><p class="msg-text">“25 September was the day our eyes met for the first time — a silent eye contact that slowly became my favorite memory.”</p></div>
-                </div>
-            </div>
+<div id="p2" class="page">
+    <div class="glass-card">
+        <p class="msg-text">“25 September was the day our eyes met for the first time — a silent eye contact that slowly became my favorite memory.”</p>
+        <div class="rose-container" onclick="showGifMsg(this, 'Every petal of this rose represents my love for you, Betuu ji.')">
+            <svg viewBox="0 0 100 100">
+                <path d="M50 95 Q50 70 50 50" stroke="#2d5a27" stroke-width="4" fill="none"/>
+                <path d="M50 50 Q70 30 50 10 Q30 30 50 50" fill="#ff004f"/>
+                <path d="M50 45 Q65 25 50 15 Q35 25 50 45" fill="#d4003f"/>
+            </svg>
         </div>
-
-        <div class="page" id="p3">
-            <div class="scene">
-                <div class="char boy" id="boyNode">
-                    <svg viewBox="0 0 100 200" width="60"><circle cx="50" cy="40" r="15" fill="#18ffff"/><line x1="50" y1="55" x2="50" y2="120" stroke="#18ffff" stroke-width="5"/><line x1="50" y1="70" x2="15" y2="100" stroke="#18ffff" stroke-width="5"/><line x1="50" y1="70" x2="85" y2="60" stroke="#18ffff" stroke-width="5"/><line x1="50" y1="120" x2="30" y2="185" stroke="#18ffff" stroke-width="5"/><line x1="50" y1="120" x2="70" y2="185" stroke="#18ffff" stroke-width="5"/><img src="rose.gif" class="rose-icon"></svg>
-                </div>
-                <div class="char girl"><svg viewBox="0 0 100 200" width="60"><circle cx="50" cy="40" r="15" fill="#ff2d75"/><path d="M50 55 L20 145 L80 145 Z" fill="#ff2d75"/><line x1="40" y1="145" x2="40" y2="190" stroke="#ff2d75" stroke-width="5"/><line x1="60" y1="145" x2="60" y2="190" stroke="#ff2d75" stroke-width="5"/></svg></div>
-            </div>
-            <div class="glass-card" onclick="openCard(this, 3)">
-                <div class="card-inner">
-                    <div class="face">
-                        <img src="heart2.gif" class="gif-box">
-                        <h2 class="neon-b">Betuu ji...</h2>
-                        <p>I want to walk every mile with you, Morni.</p>
-                    </div>
-                    <div class="back"><p class="msg-text neon-p">"I don't just like you, I admire the soul you are. You make everything beautiful."</p></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="p4">
-            <div class="slider-3d">
-                <div class="slide"><img src="photo1.jpg" onerror="this.src='https://via.placeholder.com/200x300/ff2d75/fff?text=Morni'"></div>
-                <div class="slide"><img src="photo2.jpg" onerror="this.src='https://via.placeholder.com/200x300/18ffff/fff?text=Betuu+Ji'"></div>
-                <div class="slide"><img src="photo3.jpg" onerror="this.src='https://via.placeholder.com/200x300/ff2d75/fff?text=Angel'"></div>
-                <div class="slide"><img src="photo4.jpg" onerror="this.src='https://via.placeholder.com/200x300/18ffff/fff?text=Forever'"></div>
-            </div>
-            <div class="glass-card" onclick="openCard(this, 4)">
-                <div class="card-inner">
-                    <div class="face">
-                        <img src="cute.gif" class="gif-box">
-                        <h2 class="neon-p">My Reflection</h2>
-                        <p>In every photo, in every thought... it's you.</p>
-                    </div>
-                    <div class="back"><p class="msg-text neon-b">"Your smile is my favorite scene. I could look at you forever without getting tired."</p></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="p5">
-            <div class="glass-card" onclick="openCard(this, 5)">
-                <div class="card-inner">
-                    <div class="face">
-                        <img src="promise.gif" class="gif-box">
-                        <h2 class="neon-b">A Promise</h2>
-                        <p>Betuu ji, I promise to never let you go.</p>
-                    </div>
-                    <div class="back"><p class="msg-text neon-p">"No matter how hard it gets, I'll be right here by your side. Always."</p></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="page" id="p6">
-            <div class="glass-card">
-                <div style="display:flex; justify-content:center; gap:10px;">
-                    <img src="hug.gif" class="gif-box" style="width:80px;">
-                    <img src="kiss.gif" class="gif-box" style="width:80px;">
-                </div>
-                <img src="endlove.gif" class="gif-box">
-                <h1 class="neon-p">Morni, Will You?</h1>
-                <p class="msg-text">"I don't call you mine... but my heart already knows you are. Will you be mine forever, Betuu ji?"</p>
-                <div class="neon-b" style="margin-top:20px; font-size:24px;">💖 Forever & Always 💖</div>
-            </div>
-        </div>
+        <div class="tap-msg neon-blue"></div>
     </div>
+</div>
 
-    <audio id="bgMusic" loop><source src="tere-liye.mp3" type="audio/mpeg"></audio>
+<div id="p3" class="page"><div class="glass-card"><img src="heart1.gif" class="gif-display" onclick="showGifMsg(this, 'You are the beat of my heart, Morni.')"><div class="tap-msg neon-pink"></div></div></div>
+<div id="p4" class="page"><div class="glass-card"><img src="heart2.gif" class="gif-display" onclick="showGifMsg(this, 'I found my world in your eyes.')"><div class="tap-msg neon-blue"></div></div></div>
 
-    <script>
-        const audio = document.getElementById('bgMusic');
-        const video = document.getElementById('pVideo');
-        const vidWrap = document.getElementById('video-wrap');
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let initialized = false;
+<div id="p5" class="page">
+    <div class="glass-card">
+        <div class="proposal-scene">
+            <div class="boy" id="boy-bot">
+                <svg viewBox="0 0 100 100" width="60"><circle cx="50" cy="20" r="10" fill="#00d4ff"/><path d="M50 30 L50 70 L30 90 M50 70 L70 90 M30 50 L70 50" stroke="#00d4ff" stroke-width="3"/></svg>
+                <div style="position:absolute; top:40px; right:-10px; font-size:20px;">🌹</div>
+            </div>
+            <div class="girl">
+                <svg viewBox="0 0 100 100" width="60"><circle cx="50" cy="20" r="10" fill="#ff007f"/><path d="M50 30 L50 60 L30 90 M50 60 L70 90 M50 40 L80 40" stroke="#ff007f" stroke-width="3" fill="none"/></svg>
+            </div>
+        </div>
+        <p class="msg-text neon-pink" id="prop-text">Betuu ji, My life is incomplete without you...</p>
+        <button class="btn" id="prop-btn" style="display:none;" onclick="nextPage()">Accept 💖</button>
+    </div>
+</div>
 
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
+<div id="p6" class="page"><div class="glass-card"><img src="hug.gif" class="gif-display" onclick="showGifMsg(this, 'A warm hug to solve all our worries.')"><div class="tap-msg neon-pink"></div></div></div>
+<div id="p7" class="page"><div class="glass-card"><img src="kiss.gif" class="gif-display" onclick="showGifMsg(this, 'A promise of forever in one kiss.')"><div class="tap-msg neon-blue"></div></div></div>
 
-        class Star {
-            constructor() { this.reset(); }
-            reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.s = Math.random() * 2; this.v = Math.random() * 0.5 + 0.2; this.c = Math.random() > 0.5 ? '#ff2d75' : '#18ffff'; }
-            draw() { ctx.fillStyle = this.c; ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill(); this.y -= this.v; if(this.y < 0) this.reset(); }
-        }
-        let stars = Array.from({length: 80}, () => new Star());
-        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(anim); }
-        anim();
+<div id="p8" class="page">
+    <div class="glass-card">
+        <div class="slider-box" id="slider">
+            <img src="photo1.jpg" class="slide" style="transform: rotateY(0deg) translateZ(150px)">
+            <img src="photo2.jpg" class="slide" style="transform: rotateY(90deg) translateZ(150px)">
+            <img src="photo3.jpg" class="slide" style="transform: rotateY(180deg) translateZ(150px)">
+            <img src="photo4.jpg" class="slide" style="transform: rotateY(270deg) translateZ(150px)">
+        </div>
+        <p class="msg-text">Our Beautiful Memories...</p>
+        <button class="btn" onclick="nextPage()">Continue ✨</button>
+    </div>
+</div>
 
-        function startApp() {
-            if(!initialized) { audio.volume = 0.35; audio.play().catch(()=>{}); initialized = true; }
-        }
+<div id="p9" class="page"><div class="glass-card"><img src="cute.gif" class="gif-display" onclick="showGifMsg(this, 'You look so cute when you smile, Morni!')"><div class="tap-msg neon-pink"></div></div></div>
+<div id="p10" class="page"><div class="glass-card"><img src="promise.gif" class="gif-display" onclick="showGifMsg(this, 'I promise to be yours, always.')"><div class="tap-msg neon-blue"></div></div></div>
 
-        function openCard(el, pageNum) {
-            if(!el.classList.contains('opened')) {
-                el.classList.add('opened');
-                blastHearts();
-            } else {
-                if(pageNum === 1) {
-                    audio.pause();
-                    vidWrap.style.display = 'block';
-                    video.play();
-                    video.onended = () => { vidWrap.style.display = 'none'; audio.play(); changePage(2); };
-                } else { changePage(pageNum + 1); }
-            }
-        }
+<div id="p11" class="page">
+    <div class="glass-card">
+        <img src="endlove.gif" class="gif-display">
+        <h2 class="neon-pink">Forever Yours</h2>
+        <p class="msg-text">“Dear Morni, this is not just a moment — it’s the beginning of everything I feel for you.”</p>
+        <p class="neon-blue" style="font-size: 1.5rem;">I Love You, Betuu ji! 💖</p>
+    </div>
+</div>
 
-        function changePage(num) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById('p' + num);
-            if(target) {
-                target.classList.add('active');
-                if(num === 3) {
-                    setTimeout(() => {
-                        const boy = document.getElementById('boyNode');
-                        boy.style.left = '45px';
-                        setTimeout(() => boy.style.transform = 'translateY(15px) rotate(-15deg)', 3500);
-                    }, 500);
-                }
-                if(num === 6) setInterval(blastHearts, 1000);
-            }
-        }
+<script>
+    let currentPage = 1;
+    const music = document.getElementById('main-music');
+    const video = document.getElementById('love-video');
 
-        function blastHearts() {
-            for(let i=0; i<15; i++) {
-                const h = document.createElement('div');
-                h.className = 'heart'; h.innerHTML = '💖';
-                h.style.left = Math.random() * 100 + 'vw';
-                h.style.top = (Math.random() * 20 + 70) + 'vh';
-                document.body.appendChild(h);
-                setTimeout(() => h.remove(), 1500);
-            }
-        }
+    // Canvas Background
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
 
-        function copyCode(e) {
-            e.stopPropagation();
-            const text = document.documentElement.outerHTML;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copy-overlay');
-                btn.innerHTML = "✅ Copied!";
-                setTimeout(() => btn.innerHTML = "📋 Copy Full Code", 2000);
+    function initParticles() {
+        for(let i=0; i<60; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 3,
+                color: i % 2 === 0 ? '#ff007f' : '#00d4ff',
+                vX: Math.random() * 1 - 0.5,
+                vY: Math.random() * 1 - 0.5
             });
         }
-    </script>
+    }
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.vX; p.y += p.vY;
+            if(p.x < 0 || p.x > canvas.width) p.vX *= -1;
+            if(p.y < 0 || p.y > canvas.height) p.vY *= -1;
+            ctx.fillStyle = p.color;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+        });
+        requestAnimationFrame(drawParticles);
+    }
+    initParticles(); drawParticles();
+
+    function startExperience() {
+        music.volume = 0.35;
+        music.play();
+        playVideo();
+    }
+
+    function playVideo() {
+        showPage('p-video');
+        music.pause();
+        music.currentTime = 0;
+        video.play();
+        video.onended = () => {
+            music.play();
+            nextPage();
+        };
+    }
+
+    function nextPage() {
+        currentPage++;
+        showPage('p' + currentPage);
+        if(currentPage === 5) runProposal();
+        if(currentPage === 8) runSlider();
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function showGifMsg(el, text) {
+        const tapMsg = el.nextElementSibling;
+        if(tapMsg.style.display === 'block') {
+            nextPage();
+        } else {
+            tapMsg.innerText = text;
+            tapMsg.style.display = 'block';
+            burstHearts();
+        }
+    }
+
+    function runProposal() {
+        const boy = document.getElementById('boy-bot');
+        setTimeout(() => {
+            boy.style.left = "calc(50% - 70px)";
+            setTimeout(() => {
+                document.getElementById('prop-text').innerText = "Will you be mine forever, Morni? 💍";
+                document.getElementById('prop-btn').style.display = "inline-block";
+                burstHearts();
+            }, 3200);
+        }, 500);
+    }
+
+    let rotation = 0;
+    function runSlider() {
+        setInterval(() => {
+            rotation -= 90;
+            document.getElementById('slider').style.transform = `rotateY(${rotation}deg)`;
+        }, 3000);
+    }
+
+    function burstHearts() {
+        for(let i=0; i<15; i++) {
+            const h = document.createElement('div');
+            h.innerHTML = "💖";
+            h.style.position = "fixed";
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.top = "100vh";
+            h.style.fontSize = Math.random() * 20 + 20 + "px";
+            h.style.transition = "3s";
+            h.style.zIndex = "1000";
+            document.body.appendChild(h);
+            setTimeout(() => {
+                h.style.top = "-10vh";
+                h.style.left = (Math.random() * 100) + "vw";
+                h.style.opacity = "0";
+            }, 10);
+            setTimeout(() => h.remove(), 3000);
+        }
+    }
+</script>
+
 </body>
 </html>
