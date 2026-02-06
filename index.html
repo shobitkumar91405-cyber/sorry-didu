@@ -1,290 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- ROMANTIC THEME & ANIMATIONS --- */
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            text-align: center;
-            position: relative;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Ritika didu 💖</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+-webkit-tap-highlight-color: transparent;
+}
+    body {
+        background: radial-gradient(circle at center, #2c0211 0%, #000000 100%);
+        color: white;
+        overflow-x: hidden;
+        height: 100vh;
+        width: 100vw;
+    }
 
-        /* Floating Background Hearts */
-        .bg-heart {
-            position: absolute;
-            bottom: -100px;
-            font-size: 2rem;
-            color: rgba(255, 255, 255, 0.6);
-            animation: floatUp 10s linear infinite;
-            z-index: 0;
-        }
+    .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
-        }
+    .header h1 {
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 1px;
+    }
 
-        .container {
-            position: relative;
-            z-index: 10;
-            padding: 20px;
-            max-width: 90%;
-        }
+    .header p {
+        font-size: 10px;
+        opacity: 0.6;
+        margin-top: 2px;
+    }
 
-        /* --- CREDITS (TOP FIXED) --- */
-        .top-credits {
-            position: absolute;
-            top: 15px;
-            width: 100%;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #d6336c;
-            font-weight: bold;
-            z-index: 20;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-        }
-        .top-credits a {
-            color: #d6336c;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
+    #particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
 
-        /* --- IMAGES & TEXT --- */
-        .gif-container img {
-            width: 200px; /* Thoda chota kiya taaki screen pe fit aaye */
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
-            margin-bottom: 15px;
-            border: 4px solid white;
-        }
+    .heart-particle {
+        position: absolute;
+        color: rgba(255, 50, 100, 0.6);
+        animation: float linear forwards;
+    }
 
-        h1 {
-            font-family: 'Pacifico', cursive; /* Handwritten Style */
-            color: #ff4757;
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 0px white;
-            line-height: 1.4;
-        }
+    @keyframes float {
+        0% { transform: translateY(100vh) scale(0); opacity: 0; }
+        20% { opacity: 0.8; }
+        100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
 
-        /* --- BUTTONS --- */
-        .buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+    .container {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
 
-        .btn {
-            padding: 12px 30px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            font-family: 'Poppins', sans-serif;
-        }
+    .card {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 24px;
+        padding: 30px 20px;
+        width: 100%;
+        max-width: 360px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 15px rgba(255, 50, 100, 0.1);
+        display: none;
+        animation: fadeInScale 0.6s ease-out forwards;
+    }
 
-        #yesBtn {
-            background-color: #ff4757; 
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 71, 87, 0.5);
-        }
-        
-        #noBtn {
-            background-color: #ffffff;
-            color: #ff4757;
-        }
+    .card.active {
+        display: block;
+    }
 
-        #yesBtn:active { transform: scale(0.95); }
+    @keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
 
-        /* --- GIFT BOXES --- */
-        .gift-grid {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
+    .gif-container {
+        width: 100%;
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .gift-box {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
-        }
+    .gif-container img {
+        width: 100%;
+        display: block;
+    }
 
-        .gift-box:hover {
-            transform: translateY(-10px);
-            background: white;
-            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.3);
-        }
+    h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #ff4d79;
+        text-shadow: 0 0 10px rgba(255, 77, 121, 0.3);
+    }
 
-        .gift-box img {
-            width: 80px;
-            height: 80px;
-        }
-        
-        .gift-label {
-            display: block;
-            margin-top: 8px;
-            color: #c0392b;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 25px;
+    }
 
-        .hidden { display: none !important; }
+    .btn {
+        background: linear-gradient(45deg, #ff4d79, #ff1a53);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 5px 15px rgba(255, 77, 121, 0.4);
+    }
 
-    </style>
+    .btn:active {
+        transform: scale(0.95);
+    }
+
+    .gif-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .option-btn {
+        display: block;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        text-align: left;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .option-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    #music-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        z-index: 1000;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .music-playing {
+        animation: rotate 3s linear infinite;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .final-text {
+        font-size: 18px;
+        font-weight: 500;
+        margin-top: 20px;
+        white-space: pre-line;
+    }
+</style>
+
 </head>
 <body>
+<div class="header">
+    <h1>Made by Ansh 💖</h1>
+    <p>@smss1708</p>
+</div>
 
-    <audio id="bg-music" src="valentine day.mp3" loop></audio>
+<div id="particles-container"></div>
 
-    <div id="hearts-container"></div>
-
-    <div class="top-credits">
-        Made by sivasingh🥀 | Insta - <a href="https://instagram.com/smss1708" target="_blank">@smss1708</a>
-    </div>
-
-    <div class="container" id="stage1">
+<div class="container">
+    <div class="card active" id="card-1">
         <div class="gif-container">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmM5YnZ3bGh3YnZ3YnZ3YnZ3YnZ3YnZ3YnZ3YnZ3YnZ3eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Bear">
+            <img src="intro.gif" alt="Intro">
         </div>
-        <h1>Hello Cutie! 💖<br>Will you be my Valentine?</h1>
-        <div class="buttons">
-            <button class="btn" id="yesBtn" onclick="goToGiftStage()">Yes</button>
-            <button class="btn" id="noBtn" onclick="rejectLove()">No</button>
-        </div>
+        <h2>Hey Cutiepie 🌹</h2>
+        <p>Can we talk for a moment?<br>There’s something important I want to tell you…</p>
+        <button class="btn" onclick="nextCard(2)">Continue ❤️</button>
     </div>
 
-    <div class="container hidden" id="stage2">
-        <h1>Yay! Choose a Gift for me? 🎁</h1>
-        <div class="gift-grid">
-            <div class="gift-box" onclick="finalCelebration()">
-                <img src="https://cdn-icons-png.flaticon.com/512/1164/1164620.png" alt="Rose">
-                <span class="gift-label">Rose 🌹</span>
-            </div>
-            <div class="gift-box" onclick="finalCelebration()">
-                <img src="https://cdn-icons-png.flaticon.com/512/3343/3343795.png" alt="Chocolate">
-                <span class="gift-label">Chocolate 🍫</span>
-            </div>
-            <div class="gift-box" onclick="finalCelebration()">
-                <img src="https://cdn-icons-png.flaticon.com/512/2632/2632731.png" alt="Teddy">
-                <span class="gift-label">Teddy 🧸</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="container hidden" id="stage3">
+    <div class="card" id="card-2">
         <div class="gif-container">
-            <img src="kiss.gif" alt="Romantic Kiss" id="final-gif">
+            <img src="sorry1.gif" alt="Sorry">
         </div>
-        <h1>She Said Yes! ❤️<br>I knew you loved me!</h1>
+        <h2>Ritika didu…</h2>
+        <p>I know I hurt you…<br>and I’ve been feeling really bad about it.</p>
+        <button class="btn" onclick="nextCard(3)">Next →</button>
     </div>
 
-    <script>
-        // --- Setup Background Animation ---
-        function createHearts() {
-            const container = document.getElementById('hearts-container');
-            for(let i=0; i<15; i++) {
-                let heart = document.createElement('div');
-                heart.innerHTML = '❤';
-                heart.classList.add('bg-heart');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                container.appendChild(heart);
-            }
+    <div class="card" id="card-3">
+        <h2>From my heart…</h2>
+        <div class="gif-grid">
+            <div class="gif-container"><img src="heart1.gif" alt="Heart 1"></div>
+            <div class="gif-container"><img src="heart2.gif" alt="Heart 2"></div>
+        </div>
+        <p>Tap to see the message ↓</p>
+        <button class="btn" onclick="nextCard(4)">Continue ❤️</button>
+    </div>
+
+    <div class="card" id="card-4">
+        <h2>Little things…</h2>
+        <p style="margin-bottom:15px; font-size: 14px; opacity:0.8;">Things I want you to know</p>
+        <button class="option-btn" onclick="alert('I am deeply sorry for my actions. I never meant to cause any pain.')">💖 My Regret</button>
+        <button class="option-btn" onclick="alert('You mean the world to me, and your happiness is my priority.')">💖 My Care</button>
+        <button class="option-btn" onclick="alert('I promise to be more understanding and patient with us.')">💖 My Promise</button>
+        <div style="margin-top: 20px;">
+            <button class="btn" onclick="nextCard(5)">Next →</button>
+        </div>
+    </div>
+
+    <div class="card" id="card-5">
+        <div class="gif-container">
+            <img src="promise.gif" alt="Promise">
+        </div>
+        <p style="font-size: 14px; text-align: left;">
+            I’m sorry Ritika didu, for hurting you and making you feel upset. 
+            I never wanted to be the reason behind your tears or your silence.
+            <br><br>
+            You matter to me more than I ever show. 
+            I promise to listen, to grow, and to be better every single day.
+            <br><br>
+            I’m really trying… and I hope you can forgive me.
+        </p>
+        <button class="btn" onclick="nextCard(6)">Forgive Me? ❤️</button>
+    </div>
+
+    <div class="card" id="card-6">
+        <div class="gif-container">
+            <img src="endlove.gif" alt="End Love">
+        </div>
+        <div class="final-text">
+            I promise to listen more,
+            understand better,
+            and never let you walk alone through pain again.
+        </div>
+    </div>
+</div>
+
+<div id="music-btn" onclick="toggleMusic()">🎵</div>
+<audio id="bg-music" loop>
+    <source src="[https://www.bensound.com/bensound-music/bensound-love.mp3](https://www.bensound.com/bensound-music/bensound-love.mp3)" type="audio/mpeg">
+</audio>
+
+<script>
+    const music = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-btn');
+    let musicStarted = false;
+
+    function initMusic() {
+        if (!musicStarted) {
+            music.volume = 0.35;
+            music.play().catch(() => {
+                console.log("Autoplay blocked by browser");
+            });
+            musicBtn.classList.add('music-playing');
+            musicStarted = true;
         }
-        createHearts();
+    }
 
-        // --- Logic Variables ---
-        let yesButtonSize = 1;
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const audio = document.getElementById('bg-music');
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            musicBtn.classList.add('music-playing');
+        } else {
+            music.pause();
+            musicBtn.classList.remove('music-playing');
+        }
+    }
+
+    function nextCard(cardNumber) {
+        initMusic();
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        document.getElementById('card-' + cardNumber).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function createHeart() {
+        const container = document.getElementById('particles-container');
+        const heart = document.createElement('div');
+        heart.className = 'heart-particle';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (Math.random() * 10 + 10) + 'px';
         
-        // No button texts
-        const noTexts = ["No", "Are you sure?", "Soch lo!", "Man jao!", "Dil todogi?", "Please na!", "Last Chance!", "Cry aa raha hai.."];
-        let noCount = 0;
+        const duration = Math.random() * 3 + 4;
+        heart.style.animationDuration = duration + 's';
+        
+        container.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.remove();
+        }, duration * 1000);
+    }
 
-        function playMusic() {
-            if (audio.paused) {
-                audio.play().catch(e => console.log("Audio requires interaction"));
-            }
-        }
+    setInterval(createHeart, 400);
 
-        // Action: Click No
-        function rejectLove() {
-            playMusic();
-            noCount++;
-            yesButtonSize += 0.3; // Grow Yes button
-            yesBtn.style.transform = `scale(${yesButtonSize})`;
-            
-            // Change text
-            let textIndex = Math.min(noCount, noTexts.length - 1);
-            noBtn.innerText = noTexts[textIndex];
-        }
+    // Interaction listener to handle browser autoplay policies
+    document.body.addEventListener('click', () => {
+        if(!musicStarted) initMusic();
+    }, { once: true });
+</script>
 
-        // Action: Click Yes -> Go to Stage 2
-        function goToGiftStage() {
-            playMusic();
-            document.getElementById('stage1').classList.add('hidden');
-            document.getElementById('stage2').classList.remove('hidden');
-        }
-
-        // Action: Pick Gift -> Final Stage
-        function finalCelebration() {
-            playMusic();
-            document.getElementById('stage2').classList.add('hidden');
-            document.getElementById('stage3').classList.remove('hidden');
-            
-            // Blast confetti
-            blastConfetti();
-        }
-
-        // Confetti Blast Logic
-        function blastConfetti() {
-            const duration = 8 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
-
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 50 * (timeLeft / duration);
-                
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#ff0000', '#ff69b4', '#ffd700'] }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#ff0000', '#ff69b4', '#fff'] }));
-            }, 250);
-        }
-    </script>
 </body>
 </html>
