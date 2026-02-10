@@ -1,368 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* --- General Settings --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Daddy Day 🧸</title>
 
-        body {
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            background-color: #ffdde1; /* Fallback */
-            background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            position: relative;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{
+height:100vh;
+background:linear-gradient(135deg,#ffe6ec,#fff1d6,#fde2ff);
+overflow:hidden;
+text-align:center;
+}
 
-        /* --- Floating Hearts Background --- */
-        .bg-heart {
-            position: absolute;
-            top: -10%;
-            color: rgba(255, 255, 255, 0.5);
-            animation: floatUp linear infinite;
-            z-index: 0;
-            font-size: 20px;
-        }
+/* header */
+header{
+position:fixed;
+top:10px;
+left:0;
+right:0;
+z-index:10;
+}
+header h1{font-size:22px;color:#6b2c4f}
+header p{font-size:14px;opacity:.7}
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-        }
+/* hearts */
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:18px;
+animation:floatUp linear infinite;
+opacity:.6;
+}
+@keyframes floatUp{
+to{transform:translateY(-110vh);opacity:0}
+}
 
-        /* --- Header Credit --- */
-        .credit-header {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            text-align: center;
-            z-index: 100;
-            font-size: 14px;
-            color: #fff;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-        .credit-header a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
+/* teddy grid */
+#teddyArea{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+height:100vh;
+padding-top:80px;
+gap:14px;
+}
 
-        /* --- Main Card Container --- */
-        .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-            z-index: 10;
-            transition: transform 0.3s ease;
-            min-height: 500px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
+.teddy{
+font-size:42px;
+cursor:pointer;
+animation:bounce 3s ease-in-out infinite;
+transition:.4s;
+}
+@keyframes bounce{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+}
 
-        /* --- Typography --- */
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            color: #d63384;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.1);
-        }
+/* overlay */
+#overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.4);
+backdrop-filter:blur(6px);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:20;
+}
 
-        p {
-            color: #555;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
+/* big teddy */
+#bigTeddy{
+font-size:120px;
+animation:pop .6s ease;
+}
+@keyframes pop{
+from{transform:scale(.5);opacity:0}
+to{transform:scale(1);opacity:1}
+}
 
-        /* --- Images --- */
-        .polaroid {
-            background: white;
-            padding: 15px;
-            padding-bottom: 40px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: rotate(-3deg);
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 250px;
-            border-radius: 5px;
-        }
-        .polaroid img {
-            width: 100%;
-            border-radius: 3px;
-            display: block;
-        }
+/* card */
+.card{
+margin-top:20px;
+background:#fff;
+padding:20px;
+border-radius:20px;
+width:85%;
+max-width:360px;
+box-shadow:0 0 20px rgba(255,120,170,.4);
+animation:fadeUp .8s ease;
+}
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+.card p{
+font-size:16px;
+color:#444;
+line-height:1.5;
+}
+button{
+margin-top:15px;
+padding:12px 26px;
+border:none;
+border-radius:30px;
+background:linear-gradient(135deg,#ff6fae,#ff9f6f);
+color:#fff;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 0 15px rgba(255,120,170,.5);
+}
 
-        /* --- Buttons --- */
-        .btn {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-            position: relative; /* For absolute positioning of No button */
-            width: 100%;
-            height: 60px; /* Space for moving button */
-        }
-
-        /* --- Sections / Steps --- */
-        .step {
-            display: none; /* Hidden by default */
-            width: 100%;
-            animation: fadeIn 0.8s ease forwards;
-        }
-        
-        .step.active {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Canvas for Confetti */
-        #confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 99;
-        }
-
-        /* Instagram Icon Style */
-        .insta-icon {
-            font-size: 1.2em;
-            vertical-align: middle;
-        }
-
-    </style>
+/* final screen */
+#final{
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
+#final h2{
+font-size:24px;
+color:#6b2c4f;
+margin-top:15px;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="credit-header">
-        Made by sivasingh | <a href="https://instagram.com/smss1708" target="_blank">📷 @smss1708</a>
-    </div>
+<header>
+<h1>Happy Daddy Day 🧸💖</h1>
+<p>Made with love by Sivasingh · @smss1708</p>
+</header>
 
-    <audio id="bgMusic" loop>
-        <source src="valentine day.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+<div id="teddyArea"></div>
 
-    <canvas id="confetti"></canvas>
+<div id="overlay">
+<div id="bigTeddy">🧸</div>
+<div class="card">
+<p>
+Happy Daddy Day 🧸<br><br>
+You are my comfort,  
+my safe place,  
+my soft teddy in a hard world.<br><br>
+When I hug you,  
+everything feels calm again.<br><br>
+Thank you for being my forever teddy 💖
+</p>
+<button onclick="goFinal()">Hug You 🤍</button>
+</div>
+</div>
 
-    <div class="card">
-        
-        <div class="step active" id="step1">
-            <h1>Hey Beautiful</h1>
-            <p>I have created a small world just for you.<br>Put on your finger☝.</p>
-            <button class="btn" onclick="startExperience()">Start Experience ❤️</button>
-        </div>
+<div id="final">
+<div style="font-size:120px">🧸</div>
+<h2>
+For me, Daddy Day is special<br>
+because YOU exist 💖
+</h2>
+</div>
 
-        <div class="step" id="step2">
-            <h1>A Secret...</h1>
-            <p>Before I met you, life was just... ordinary.<br>But you walked in, and suddenly everything became magical.</p>
-            <button class="btn" onclick="nextStep(3)">See Magic ✨</button>
-        </div>
+<audio id="bgm" loop>
+<source src="valentine-day.mp3" type="audio/mpeg">
+</audio>
 
-        <div class="step" id="step3">
-            <div class="polaroid">
-                <img src="photo1.jpg" alt="Us">
-            </div>
-            <h1 style="font-size: 2.5rem;">My Favorite View</h1>
-            <p>In a world full of chaos, looking at you is my only peace.</p>
-            <button class="btn" onclick="nextStep(4)">Next 🌹</button>
-        </div>
+<script>
+const teddyArea=document.getElementById("teddyArea");
+const colors=["🧸","🧸","🧸","🧸","🧸"];
+for(let i=0;i<30;i++){
+let t=document.createElement("div");
+t.className="teddy";
+t.innerHTML=colors[Math.floor(Math.random()*colors.length)];
+t.onclick=()=>openTeddy();
+teddyArea.appendChild(t);
+}
 
-        <div class="step" id="step4">
-            <h1>My Promise</h1>
-            <p>I don't promise that it will be easy.<br>But I promise that I will always hold your hand, through the storms and the sunshine.</p>
-            <button class="btn" onclick="nextStep(5)">One Last Thing...</button>
-        </div>
+/* music start on first interaction */
+let musicStarted=false;
+function startMusic(){
+if(!musicStarted){
+let m=document.getElementById("bgm");
+m.volume=0.35;
+m.play();
+musicStarted=true;
+}
+}
 
-        <div class="step" id="step5">
-            <h1 style="font-size: 3rem;">Will You Be Mine?</h1>
-            <p>Be my Valentine, my partner, my everything?</p>
-            <div class="btn-group">
-                <button class="btn" onclick="sheSaidYes()">YES! 💍</button>
-                <button class="btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No 🙈</button>
-            </div>
-        </div>
+/* open teddy */
+function openTeddy(){
+startMusic();
+document.getElementById("overlay").style.display="flex";
+burstHearts(25);
+}
 
-        <div class="step" id="step6">
-            <h1 style="font-size: 4rem;">She Said YES! 💖</h1>
-            <p>You just made me the happiest person alive.<br>I love you infinitely.</p>
-            <p style="font-size: 0.9rem; margin-top: 20px;">(Screenshot this and send it to me!)</p>
-        </div>
+/* final */
+function goFinal(){
+document.getElementById("overlay").style.display="none";
+document.getElementById("teddyArea").style.display="none";
+document.getElementById("final").style.display="flex";
+burstHearts(40);
+}
 
-    </div>
+/* hearts */
+function burstHearts(n){
+for(let i=0;i<n;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"%";
+h.style.animationDuration=(4+Math.random()*4)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),8000);
+}
+}
+setInterval(()=>burstHearts(3),1500);
+</script>
 
-    <script>
-        // --- Logic ---
-        
-        // Music Function
-        function startExperience() {
-            var music = document.getElementById('bgMusic');
-            music.play().catch(error => {
-                console.log("Autoplay prevented. User interaction required.");
-            });
-            nextStep(2);
-        }
-
-        // Navigation
-        function nextStep(stepNumber) {
-            // Hide all steps
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active');
-            });
-            // Show requested step
-            document.getElementById('step' + stepNumber).classList.add('active');
-        }
-
-        // The "No" Button Prank
-        function moveButton() {
-            var btn = document.getElementById('noBtn');
-            var card = document.querySelector('.card');
-            
-            // Get boundaries of the card to keep button inside
-            var cardRect = card.getBoundingClientRect();
-            var btnRect = btn.getBoundingClientRect();
-            
-            // Calculate random position within the card safely
-            var maxX = cardRect.width - btnRect.width - 40; 
-            var maxY = cardRect.height - btnRect.height - 40;
-            
-            var randomX = Math.floor(Math.random() * maxX) - (cardRect.width / 2) + 50;
-            var randomY = Math.floor(Math.random() * maxY) - (cardRect.height / 2) + 50;
-
-            btn.style.position = 'absolute';
-            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }
-
-        // The "Yes" Action
-        function sheSaidYes() {
-            nextStep(6);
-            startConfetti();
-        }
-
-        // --- Visual Effects ---
-
-        // 1. Generate Floating Hearts Background
-        function createFloatingHearts() {
-            const body = document.querySelector('body');
-            const heartCount = 20; // Number of background hearts
-
-            for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'bg-heart';
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4-7s speed
-                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-                body.appendChild(heart);
-            }
-        }
-        createFloatingHearts();
-
-
-        // 2. Confetti Effect (Simple JS implementation)
-        const canvas = document.getElementById('confetti');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particles = [];
-
-        function startConfetti() {
-            for (let i = 0; i < 300; i++) {
-                particles.push({
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight / 2,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                    velocity: {
-                        x: (Math.random() - 0.5) * 10,
-                        y: (Math.random() - 0.5) * 10
-                    },
-                    size: Math.random() * 5 + 2,
-                    alpha: 1
-                });
-            }
-            requestAnimationFrame(updateConfetti);
-        }
-
-        function updateConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, index) => {
-                p.x += p.velocity.x;
-                p.y += p.velocity.y;
-                p.velocity.y += 0.05; // Gravity
-                p.alpha -= 0.005; // Fade out
-
-                ctx.globalAlpha = p.alpha;
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-
-                if (p.alpha <= 0) particles.splice(index, 1);
-            });
-
-            if (particles.length > 0) requestAnimationFrame(updateConfetti);
-        }
-
-        // Handle resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-    </script>
 </body>
 </html>
