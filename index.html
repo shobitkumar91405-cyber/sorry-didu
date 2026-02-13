@@ -2,273 +2,426 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Aafiya ji </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Kiss Day 💋</title>
     <style>
-        /* CSS STYLING - (Same as before with minor color tweaks if needed) */
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Nunito:wght@400;700&display=swap');
 
-        body {
+        :root {
+            --primary: #ff4d6d;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --text-dark: #590d22;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #ffe6e6; /* Soft Pink Background */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
             font-family: 'Nunito', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dark);
+        }
+
+        /* Ambient Background Canvas */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Start Overlay */
+        #start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 154, 158, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            flex-direction: column;
+            transition: opacity 0.8s ease;
         }
 
-        /* Top Header */
-        .top-header {
-            position: absolute;
-            top: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 5px 15px;
-            border-radius: 20px;
-            z-index: 1000;
-            color: #333;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* RGB Lighting Effect Animation (SAME) */
-        @keyframes rgbGlow {
-            0% { box-shadow: 0 0 20px #ff0000, 0 0 10px #ff0000 inset; border-color: #ff0000; }
-            25% { box-shadow: 0 0 20px #ffff00, 0 0 10px #ffff00 inset; border-color: #ffff00; }
-            50% { box-shadow: 0 0 20px #00ff00, 0 0 10px #00ff00 inset; border-color: #00ff00; }
-            75% { box-shadow: 0 0 20px #0000ff, 0 0 10px #0000ff inset; border-color: #0000ff; }
-            100% { box-shadow: 0 0 20px #ff00ff, 0 0 10px #ff00ff inset; border-color: #ff00ff; }
-        }
-
-        .card {
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 1.5rem;
             background: white;
-            width: 85%;
-            max-width: 350px;
-            padding: 25px 20px;
-            border-radius: 25px;
-            text-align: center;
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.3);
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+            animation: pulse 2s infinite;
+        }
+
+        /* Main Container */
+        .container {
             position: relative;
-            /* Applying the RGB Lighting Effect */
-            border: 3px solid transparent;
-            animation: rgbGlow 4s linear infinite alternate; 
-            transition: transform 0.3s;
-            box-sizing: border-box;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            opacity: 0; /* Hidden initially */
+            transition: opacity 1s ease;
+            justify-content: space-between;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-top: 20px;
+            animation: float 3s ease-in-out infinite;
         }
 
         h1 {
-            font-family: 'Fredoka One', cursive;
-            color: #ff4d79;
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 15px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            line-height: 1.1;
         }
 
-        p {
-            color: #555;
-            font-size: 16px;
-            margin: 15px 0;
-            line-height: 1.4;
+        .subtitle {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 5px;
         }
 
-        /* Image Container */
-        .img-container {
-            width: 220px;
-            height: 220px;
-            margin: 0 auto;
-            border-radius: 15px;
-            overflow: hidden;
-            background: #fff0f5;
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .card:active {
+            transform: scale(0.92);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .card-num {
+            font-size: 0.7rem;
+            color: #fff;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* Modal */
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 100;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 2px solid #f0d4d4;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
         }
 
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            border-radius: 12px;
+        #modal.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        .btn {
-            background: #ff4d79;
+        .modal-content {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            width: 85%;
+            max-width: 350px;
+            border-radius: 30px;
+            padding: 40px 25px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        #modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .modal-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            line-height: 1.4;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .close-btn {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 10px 30px;
             border-radius: 50px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
+            font-size: 1rem;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(255, 77, 121, 0.4);
-            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 77, 121, 0.5);
+        /* Footer */
+        .footer-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            border-radius: 15px;
+            line-height: 1.4;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        /* Floating Background (Updated for Birthday) */
-        .heart-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .heart {
-            position: absolute;
-            color: #ff99bb;
-            opacity: 0.5;
-            animation: float 6s linear infinite;
+        /* Keyframes */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         @keyframes float {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
-        /* Yes/No Buttons */
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        #noBtn {
-            background: #e0e0e0;
-            color: #666;
-            box-shadow: none;
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
         }
 
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            80% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-header">Made with ❤️ - @smss1708</div>
-
-    <audio id="bgMusic" loop>
-        <source src="birthday.mp3" type="audio/mp3">
+    <audio id="bg-music" loop>
+        <source src="kiss-day.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="heart-bg" id="hearts"></div>
+    <canvas id="particle-canvas"></canvas>
 
-    <div class="card" id="screen1">
-        <h1>Happy Birthday! 🎂</h1>
-        <div class="img-container">
-            <img src="photo1.jpg" alt="Birthday Person">
-        </div>
-        <p>Today is a very special day because a cutiee was born! Ready to celebrate?</p>
-        <button class="btn" onclick="startJourney()">Open Surprise 🎁</button>
+    <div id="start-overlay">
+        <h1 style="color:var(--text-dark); margin-bottom:20px; font-size:3.5rem;">Happy<br>Kiss Day</h1>
+        <button class="start-btn" onclick="startExperience()">Tap to Open 💖</button>
     </div>
 
-    <div class="card hidden" id="screen2">
-        <h1>A Special Wish ✨</h1>
-        <div class="img-container">
-            <img src="photo2.jpg" alt="Memory Photo 1">
+    <div class="container" id="main-container">
+        <header>
+            <h1>Happy Kiss Day 💋</h1>
+            <div class="subtitle">Made by sivasingh @smss1708</div>
+        </header>
+
+        <div class="grid">
+            <div class="card" onclick="openKiss('forehead')">
+                <span class="card-num">1️⃣</span>
+                <div class="card-icon">💖</div>
+                <div class="card-title">Forehead Kiss</div>
+            </div>
+            <div class="card" onclick="openKiss('cheek')">
+                <span class="card-num">2️⃣</span>
+                <div class="card-icon">😊</div>
+                <div class="card-title">Cheek Kiss</div>
+            </div>
+            <div class="card" onclick="openKiss('hand')">
+                <span class="card-num">3️⃣</span>
+                <div class="card-icon">🤍</div>
+                <div class="card-title">Hand Kiss</div>
+            </div>
+            <div class="card" onclick="openKiss('flying')">
+                <span class="card-num">4️⃣</span>
+                <div class="card-icon">😘</div>
+                <div class="card-title">Flying Kiss</div>
+            </div>
         </div>
-        <p>I wish your life becomes as beautiful as your smile and as magical as our memories.</p>
-        <button class="btn" onclick="nextScreen(3)">Next Wish 👉</button>
+
+        <div class="footer-note">
+            If this kiss made you smile 💕<br>
+            take a screenshot<br>
+            and send it to me 😘
+        </div>
     </div>
 
-    <div class="card hidden" id="screen3">
-        <h1>Keep Shining 🌟</h1>
-        <div class="img-container">
-            <img src="photo3.jpg" alt="Memory Photo 2">
+    <div id="modal">
+        <div class="modal-content">
+            <div class="modal-emoji" id="modal-emoji">💋</div>
+            <p class="modal-text" id="modal-text">Message</p>
+            <button class="close-btn" onclick="closeModal()">Close x</button>
         </div>
-        <p>May this year bring you endless success, laughter, and lots of cake!</p>
-        <button class="btn" onclick="nextScreen(4)">Final Question 👉</button>
-    </div>
-
-    <div class="card hidden" id="screen4">
-        <h1>Important Question 🍰</h1>
-        <div class="img-container">
-            <img src="photo4.jpg" alt="Funny Photo">
-        </div>
-        <p>Do you promise to give me a big Party treat?</p>
-        <div class="btn-group">
-            <button class="btn" onclick="finalSuccess()">YES 🥳</button>
-            <button class="btn" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">NO 🙈</button>
-        </div>
-    </div>
-
-    <div class="card hidden" id="screen5">
-        <h1>YAYYY! Party Time! 🥳</h1>
-        <div class="img-container" style="background: transparent; border: none;">
-            <img src="photo5.jpg" alt="Celebration GIF" style="object-fit: cover;">
-        </div>
-        <p>Happy Birthday once again! You are the best! Let's enjoy your day! ❤️</p>
     </div>
 
     <script>
-        // Logic to switch screens and play music
+        // Data
+        const messages = {
+            forehead: { text: "A promise to protect you, respect you, and cherish your soul forever. You are safe with me. 💕", emoji: "💖" },
+            cheek: { text: "Just to see you smile! I adore your cuteness and every moment with you is magic. 😊", emoji: "😊" },
+            hand: { text: "My loyalty and my heart are yours. Walking through life with you is my greatest honor. 🤍", emoji: "🤍" },
+            flying: { text: "Catch it! 😘 My love travels any distance to find you. You are always in my thoughts.", emoji: "😘" }
+        };
 
-        function startJourney() {
-            var audio = document.getElementById("bgMusic");
-            audio.volume = 0.5;
-            audio.play().catch(error => {
-                console.log("Interaction needed for audio");
-            });
-            nextScreen(2);
-        }
-
-        function nextScreen(screenNumber) {
-            for(let i = 1; i <= 5; i++) {
-                document.getElementById('screen' + i).classList.add('hidden');
-            }
-            document.getElementById('screen' + screenNumber).classList.remove('hidden');
-        }
-
-        function finalSuccess() {
-            nextScreen(5);
-            // Makes the RGB border flash faster on success for party effect
-            document.querySelector('.card').style.animationDuration = "0.5s";
-        }
-
-        // Funny logic: Move the 'NO' button
-        function moveButton() {
-            var x = Math.random() * (window.innerWidth - 120);
-            var y = Math.random() * (window.innerHeight - 120);
-            var btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed';
-            btn.style.left = Math.max(10, x) + 'px';
-            btn.style.top = Math.max(10, y) + 'px';
-            btn.style.zIndex = '1001';
-        }
-
-        // Creating floating Birthday elements (Balloons, Cake, Hearts)
-        function createHearts() {
-            const heartContainer = document.getElementById('hearts');
-            // Added Birthday Emojis
-            const symbols = ['🎈', '🎂', '🎁', '✨', '❤', '🥳'];
+        // Logic
+        function startExperience() {
+            const overlay = document.getElementById('start-overlay');
+            const main = document.getElementById('main-container');
+            const audio = document.getElementById('bg-music');
             
-            for (let i = 0; i < 30; i++) {
-                let div = document.createElement('div');
-                div.className = 'heart';
-                div.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-                div.style.left = Math.random() * 100 + 'vw';
-                div.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Slower/Faster mix
-                div.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                heartContainer.appendChild(div);
+            audio.volume = 0.35;
+            audio.play().catch(e => console.log("Audio requires interaction"));
+            
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                main.style.opacity = '1';
+                initParticles();
+            }, 800);
+        }
+
+        function openKiss(type) {
+            const modal = document.getElementById('modal');
+            const textEl = document.getElementById('modal-text');
+            const emojiEl = document.getElementById('modal-emoji');
+            
+            textEl.innerText = messages[type].text;
+            emojiEl.innerText = "💋"; // Initial kiss
+            setTimeout(() => { emojiEl.innerText = messages[type].emoji; }, 300); // Switch to specific emoji
+
+            createBurst();
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor(burst = false) {
+                this.x = burst ? canvas.width/2 : Math.random() * canvas.width;
+                this.y = burst ? canvas.height/2 : canvas.height + 20;
+                this.size = Math.random() * 15 + 8;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 1;
+                this.type = Math.random() > 0.5 ? '💖' : '⭐';
+                this.opacity = 1;
+                this.burst = burst;
+                if(burst) {
+                    this.speedY = (Math.random() - 0.5) * 15;
+                    this.speedX = (Math.random() - 0.5) * 15;
+                }
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if(this.burst) this.opacity -= 0.02;
+                else if(this.y < -50) this.y = canvas.height + 20;
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText(this.type, this.x, this.y);
             }
         }
-        createHearts();
+
+        function initParticles() {
+            for(let i=0; i<25; i++) particles.push(new Particle());
+            animate();
+        }
+
+        function createBurst() {
+            for(let i=0; i<30; i++) particles.push(new Particle(true));
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if(p.burst && p.opacity <= 0) particles.splice(index, 1);
+            });
+            requestAnimationFrame(animate);
+        }
     </script>
 </body>
 </html>
