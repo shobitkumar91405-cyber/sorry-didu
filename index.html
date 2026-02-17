@@ -3,90 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <title>For You Ritimaa 🌸</title>
-
 <style>
 body{
   margin:0;
-  height:100vh;
   overflow:hidden;
-  background:linear-gradient(to top,#1e3c72,#2a5298);
-  display:flex;
-  justify-content:center;
-  align-items:flex-end;
-  font-family:Arial, sans-serif;
-  color:white;
+  background:linear-gradient(to top,#87ceeb 0%, #cceeff 40%, #e6f7ff 100%);
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Top Text */
+/* Ground */
+.ground{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:200px;
+  background:linear-gradient(to top,#2e7d32,#4caf50);
+}
+
+/* Message */
 .message{
   position:absolute;
   top:40px;
   width:100%;
   text-align:center;
-  font-size:40px;
-  font-weight:bold;
+  font-size:48px;
+  font-weight:600;
+  color:#d63384;
   opacity:0;
-  animation:fadeIn 3s forwards 6s;
+  animation:fadeIn 4s forwards 16s;
 }
 
 @keyframes fadeIn{
   to{opacity:1;}
 }
 
-/* Stem */
-.stem{
+svg{
   position:absolute;
   bottom:0;
-  width:10px;
-  height:0;
-  background:#145a32;
-  animation:growStem 4s forwards;
+  width:100%;
+  height:100%;
 }
 
-@keyframes growStem{
-  from{height:0;}
-  to{height:280px;}
+/* Trunk grow */
+.trunk{
+  stroke:#5d4037;
+  stroke-width:22;
+  stroke-linecap:round;
+  fill:none;
+  stroke-dasharray:800;
+  stroke-dashoffset:800;
+  animation:grow 4s forwards;
+}
+
+@keyframes grow{
+  to{stroke-dashoffset:0;}
+}
+
+/* Branch */
+.branch{
+  stroke:#6d4c41;
+  stroke-width:10;
+  stroke-linecap:round;
+  fill:none;
+  stroke-dasharray:400;
+  stroke-dashoffset:400;
+  animation:grow 3s forwards;
 }
 
 /* Leaves */
 .leaf{
-  position:absolute;
-  width:50px;
-  height:25px;
-  background:#27ae60;
-  border-radius:50%;
+  fill:#2ecc71;
   opacity:0;
-  animation:showLeaf 2s forwards;
+  transform-origin:center;
+  animation:leafGrow 2s forwards;
 }
 
-@keyframes showLeaf{
-  to{opacity:1;}
+@keyframes leafGrow{
+  0%{opacity:0; transform:scale(0);}
+  100%{opacity:1; transform:scale(1);}
 }
 
-/* Main Flower */
+/* Flower */
 .flower{
-  position:absolute;
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  background:radial-gradient(circle,pink,red);
-  transform:scale(0);
+  fill:pink;
+  opacity:0;
   animation:bloom 2s forwards;
 }
 
 @keyframes bloom{
-  to{transform:scale(1);}
-}
-
-/* Garden Flowers */
-.garden-flower{
-  position:absolute;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:radial-gradient(circle,yellow,orange);
-  transform:scale(0);
-  animation:bloom 1.5s forwards;
+  to{opacity:1;}
 }
 </style>
 </head>
@@ -94,49 +99,43 @@ body{
 <body>
 
 <div class="message">🌸 For You Ritimaa 🌸</div>
-<div class="stem"></div>
+<div class="ground"></div>
 
-<!-- Background Music -->
 <audio autoplay loop>
   <source src="tere-liye.mp3" type="audio/mpeg">
 </audio>
 
-<script>
+<svg viewBox="0 0 1400 800">
 
-// Leaves
-setTimeout(()=>{
-  for(let i=0;i<6;i++){
-    let leaf=document.createElement("div");
-    leaf.className="leaf";
-    leaf.style.bottom=(70+i*35)+"px";
-    leaf.style.left=(window.innerWidth/2 + (i%2==0? -40:10))+"px";
-    leaf.style.animationDelay=(i*0.5)+"s";
-    document.body.appendChild(leaf);
-  }
-},3000);
+<!-- TREE 1 -->
+<path class="trunk" d="M700 800 Q700 600 700 420" />
+<path class="branch" style="animation-delay:4s" d="M700 520 Q640 460 600 420"/>
+<path class="branch" style="animation-delay:5s" d="M700 520 Q760 460 800 420"/>
 
-// Main Flower
-setTimeout(()=>{
-  let flower=document.createElement("div");
-  flower.className="flower";
-  flower.style.bottom="280px";
-  flower.style.left=(window.innerWidth/2 - 30)+"px";
-  document.body.appendChild(flower);
-},5000);
+<ellipse class="leaf" cx="600" cy="410" rx="40" ry="70" style="animation-delay:7s"/>
+<ellipse class="leaf" cx="800" cy="410" rx="40" ry="70" style="animation-delay:8s"/>
 
-// Garden Spread
-setTimeout(()=>{
-  for(let i=0;i<35;i++){
-    let g=document.createElement("div");
-    g.className="garden-flower";
-    g.style.bottom=Math.random()*250+"px";
-    g.style.left=Math.random()*window.innerWidth+"px";
-    g.style.animationDelay=Math.random()*2+"s";
-    document.body.appendChild(g);
-  }
-},8000);
+<circle class="flower" cx="700" cy="420" r="30" style="animation-delay:9s"/>
 
-</script>
+<!-- TREE 2 -->
+<path class="trunk" style="animation-delay:6s"
+      d="M400 800 Q400 620 400 470"/>
+<path class="branch" style="animation-delay:10s"
+      d="M400 550 Q350 500 320 460"/>
+
+<ellipse class="leaf" cx="320" cy="450" rx="35" ry="60"
+         style="animation-delay:12s"/>
+
+<!-- TREE 3 -->
+<path class="trunk" style="animation-delay:8s"
+      d="M1000 800 Q1000 630 1000 480"/>
+<path class="branch" style="animation-delay:12s"
+      d="M1000 560 Q1050 510 1080 460"/>
+
+<ellipse class="leaf" cx="1080" cy="450" rx="35" ry="60"
+         style="animation-delay:14s"/>
+
+</svg>
 
 </body>
 </html>
