@@ -64,18 +64,19 @@
         display: inline-block;
     }
 
-    /* --- NEW VIDEO CSS --- */
+    /* --- EDITED VIDEO CSS (SMALLER SIZE) --- */
     .top-video-box {
-        width: 90%;
-        max-width: 350px; /* Screenshot jaisa chhota size */
-        margin: 60px auto 10px auto; /* Header ke neeche adjust kiya */
-        border-radius: 15px;
+        width: 180px; /* Fixed small width */
+        height: auto;
+        margin: 70px auto 5px auto; /* Header se thoda neeche */
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         background: #000;
         position: relative;
-        z-index: 50; /* Sabse upar dikhe */
-        border: 2px solid #fff;
+        z-index: 50; 
+        border: 3px solid #fff; /* White border for sticker look */
+        transform: rotate(-2deg); /* Thoda stylish tilt */
     }
 
     .top-video-box video {
@@ -83,7 +84,6 @@
         height: 100%;
         display: block;
         object-fit: cover;
-        /* User interaction disable karne ke liye */
         pointer-events: none; 
     }
 
@@ -101,7 +101,7 @@
     .balloon {
         position: absolute;
         bottom: -150px;
-        width: 70px; /* Thoda bada kiya taaki Gaarvita fit aaye */
+        width: 70px;
         height: 80px;
         background: radial-gradient(circle at 10px 10px, #ff99cc, #ff3366);
         border-radius: 50%;
@@ -110,7 +110,7 @@
         align-items: center;
         color: white;
         font-weight: bold;
-        font-size: 13px; /* Font size adjusted for longer name */
+        font-size: 13px;
         box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
         animation: floatUp 15s linear infinite;
     }
@@ -133,7 +133,7 @@
     .container {
         position: relative;
         z-index: 10;
-        min-height: 80vh; /* Adjusted height because of video */
+        min-height: 70vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -152,8 +152,8 @@
 
     /* Photo Styling */
     .photo-frame {
-        width: 250px; /* Thoda chhota kiya taaki video ke sath fit ho */
-        height: 250px;
+        width: 220px; 
+        height: 220px;
         border: 5px solid white;
         border-radius: 15px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -168,7 +168,7 @@
         object-fit: cover;
     }
     
-    /* Underline Animation (Active after Yes) */
+    /* Underline Animation */
     .glow-line {
         height: 4px;
         width: 0%;
@@ -220,7 +220,7 @@
         margin-top: 30px;
         padding: 15px 40px;
         font-size: 1.5rem;
-        display: none; /* Hidden Initially */
+        display: none; 
         animation: pulse 1.5s infinite;
     }
 
@@ -252,7 +252,7 @@
 
     /* Page 2: Date Plan */
     #page2 {
-        display: none; /* Hidden Initially */
+        display: none; 
         flex-direction: column;
         align-items: center;
         padding-bottom: 50px;
@@ -395,7 +395,7 @@
 <script>
     /* --- JAVASCRIPT LOGIC --- */
 
-    // 1. BALLOON GENERATION - NAME UPDATED TO GAARVITA
+    // 1. BALLOON GENERATION
     const balloonContainer = document.querySelector('.balloons-container');
     const balloonTexts = ["I", "Love", "You", "Gaarvita"];
     const balloonColors = ["#ff3366", "#ff99cc", "#ff66b2", "#ff0066"];
@@ -428,7 +428,7 @@
     const rainBox = document.getElementById('rainBox');
     const music = document.getElementById('bgMusic');
 
-    // Messages for "No" button - NAME UPDATED TO GAARVITA
+    // Messages for "No" button
     const noMessages = [
         "Jao na... 🥺",
         "Dil todogi? 💔",
@@ -439,7 +439,7 @@
     ];
     let noCount = 0;
 
-    // Fix Audio Autoplay on first click
+    // Fix Audio Autoplay
     document.body.addEventListener('click', () => {
         music.play().catch(() => {});
     }, { once: true });
@@ -456,18 +456,15 @@
 
     // YES Button Click
     yesBtn.addEventListener('click', () => {
-        // Hide initial buttons & title
         btnGroup.style.display = 'none';
         errorText.style.display = 'none';
         mainTitle.style.display = 'none';
         
-        // Show Success elements
         finalMsg.style.display = 'block';
         nextBtn.style.display = 'inline-block';
         glowLine.style.display = 'block';
         glowLine.style.width = '100%';
 
-        // Start Effects
         startConfetti();
         startRain();
     });
@@ -494,7 +491,7 @@
         }, 200);
     }
 
-    // 4. CONFETTI BLAST (Custom Code - No External Library)
+    // 4. CONFETTI BLAST
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -531,7 +528,6 @@
         if(particles.length > 0) requestAnimationFrame(animateConfetti);
     }
 
-    // Resize canvas on window resize
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
