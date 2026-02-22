@@ -3,352 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>for my didu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>For Nisha ❤️</title>
     <style>
-        /* Reset and basic styles */
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            /* Dark theme background from screenshots */
-            background: linear-gradient(180deg, #0f050a 0%, #2e0017 100%);
-            color: #ffb3d9; /* Light pink text */
-            font-family: 'Poppins', sans-serif;
-            height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            text-align: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #fdf5f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
 
-        /* Screen container styling */
-        .screen {
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            padding: 25px;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-        /* The class used to show the current screen */
-        .active {
-            display: flex;
+        #container {
+            text-align: center;
+            z-index: 10;
         }
 
-        /* Header styling (cursive font) */
         h1 {
-            font-family: 'Dancing Script', cursive;
-            color: #ff66a3;
-            font-size: 3.2rem;
-            margin-bottom: 15px;
-            text-shadow: 0 0 15px rgba(255, 102, 163, 0.6);
-            lowercase; /* Ensuring lowercase */
+            color: #2f3640;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Paragraph styling */
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            color: #ffd1e8;
-            line-height: 1.4;
-        }
-
-        /* Pink Button styling from screenshots */
-        .btn {
-            background-color: #ff3385;
+        button {
+            padding: 12px 30px;
+            font-size: 20px;
+            background-color: #ff4757;
             color: white;
             border: none;
-            padding: 14px 35px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 51, 133, 0.5);
-            transition: transform 0.2s, background-color 0.3s;
-            margin-top: 20px;
-        }
-        .btn:active {
-            transform: scale(0.96);
-            background-color: #e6005c;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: 0.3s all ease-in-out;
+            font-weight: bold;
         }
 
-        /* --- Screen 2 (Measuring) Specific Styles --- */
-        .progress-container {
-            width: 85%;
-            background: rgba(77, 0, 38, 0.5);
-            border-radius: 20px;
-            padding: 5px;
-            margin: 20px 0;
-            box-shadow: 0 0 10px rgba(255, 51, 133, 0.2);
-        }
-        .progress-bar {
-            width: 5%; /* Start small */
-            height: 20px;
-            background: linear-gradient(90deg, #ff66a3, #ff3385);
-            border-radius: 15px;
-            box-shadow: 0 0 15px #ff3385;
-            transition: width 2.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        #percentage {
-            font-size: 4.5rem;
-            font-family: 'Dancing Script', cursive;
-            color: #ff66a3;
-        }
-        .warning-text {
-            color: #ffcc80; /* Orange/yellowish for warning */
-            font-size: 1rem;
-            margin-top: 20px;
-            font-weight: 600;
-            letter-spacing: 1px;
+        button:hover {
+            background-color: #ff6b81;
+            transform: scale(1.05);
         }
 
-        /* --- Screen 3 (Reveal) Specific Styles --- */
-        .reveal-box {
-            background: linear-gradient(135deg, rgba(255, 51, 133, 0.1), rgba(46, 0, 23, 0.4));
-            border: 2px solid rgba(255, 102, 163, 0.3);
-            width: 100%;
-            max-width: 380px;
-            padding: 18px;
-            border-radius: 18px;
-            margin: 12px 0;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .reveal-box:hover {
-             border-color: rgba(255, 102, 163, 0.8);
-             background: rgba(255, 51, 133, 0.15);
-        }
-        .reveal-text {
-            display: none; /* Hidden initially */
-            color: #ffd1e8;
-            margin-top: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        .heart-icon {
-            color: #ff66a3;
-            font-size: 1.6rem;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* --- Screen 4 (Final Note) Specific Styles --- */
-        .note-container {
-            background: linear-gradient(135deg, #ffcae2 0%, #ff99c8 100%);
-            color: #4a0025; /* Darker text for readability on light background */
-            padding: 25px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 10px 30px rgba(255, 51, 133, 0.4);
-            position: relative;
-        }
-        .note-container img {
-            width: 160px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .note-text {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            text-align: left;
-            font-weight: 600;
-        }
-        .special-line {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #d6006b;
-            margin-bottom: 15px;
-            font-family: 'Dancing Script', cursive;
-        }
-        
-        /* The final success message hidden initially */
-        #final-success-msg {
+        #drawingArea {
             display: none;
-            background: linear-gradient(135deg, #ffcae2 0%, #ff99c8 100%);
-            color: #4a0025;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 10px 30px rgba(255, 51, 133, 0.4);
-            animation: fadeIn 1s ease;
+            position: relative;
+            width: 320px;
+            height: 450px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        #photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Shuru mein hide rahega aur sketch jaisa dikhega */
+            opacity: 0; 
         }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
+
+        /* Yeh class JavaScript ke through add hogi live draw effect ke liye */
+        .live-draw {
+            animation: drawReveal 12s ease-in-out forwards;
+        }
+
+        /* Animation: Pehle sketch filter me reveal hoga, fir color ayega */
+        @keyframes drawReveal {
+            0% { 
+                clip-path: circle(0% at 50% 50%); 
+                filter: grayscale(100%) contrast(150%) brightness(120%);
+                opacity: 1;
+            }
+            50% { 
+                clip-path: circle(100% at 50% 50%); 
+                filter: grayscale(100%) contrast(120%) brightness(100%);
+                opacity: 1;
+            }
+            80% {
+                filter: grayscale(50%) contrast(110%);
+            }
+            100% { 
+                clip-path: circle(100% at 50% 50%); 
+                filter: grayscale(0%) contrast(100%); 
+                opacity: 1; 
+            }
         }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="tere-liye.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="screen1" class="screen active">
-        <div style="font-size: 6rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(255,51,133,0.5));">🥺</div>
-        <h1>hey cutiepie</h1>
-        <p>do you even know how sorry your bachha is?</p>
-        <button class="btn" onclick="goToScreen2()">let's check 🫣</button>
+    <div id="container">
+        <h1 id="greeting">hey nisha can i draw you 🥰</h1>
+        <button id="drawBtn">Draw</button>
     </div>
 
-    <div id="screen2" class="screen">
-        <p>measuring my guilt level... ⏳</p>
-        <h1 id="percentage">0%</h1>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-fill"></div>
-        </div>
-        <p class="warning-text">⚠️ warning: too much guilt to handle</p>
-        <button class="btn" onclick="nextScreen('screen2', 'screen3')" style="display:none; opacity: 0; transition: opacity 0.5s;" id="btn-continue">continue ➔</button>
+    <div id="drawingArea">
+        <img id="photo" src="nisha.jpg" alt="Nisha Drawing">
     </div>
 
-    <div id="screen3" class="screen">
-        <h1>tap each one to reveal</h1>
-        <p style="margin-bottom: 30px;">(please read them all 🥺)</p>
-        
-        <div class="reveal-box" onclick="revealText(this)">
-            <div class="heart-icon">🤍</div>
-            <div class="reveal-text">i'm really sorry if i annoyed you even a little bit 😔</div>
-        </div>
-        
-        <div class="reveal-box" onclick="revealText(this)">
-            <div class="heart-icon">🤍</div>
-            <div class="reveal-text">i know you love me like a mother and i didn't listen to you. i was stupid 😭</div>
-        </div>
-
-        <div class="reveal-box" onclick="revealText(this)">
-            <div class="heart-icon">🤍</div>
-            <div class="reveal-text">i promise to listen to everything you say from now on. please don't be mad 💔</div>
-        </div>
-
-        <button class="btn" onclick="nextScreen('screen3', 'screen4')" style="margin-top: 30px;">see more ➔</button>
-    </div>
-
-    <div id="screen4" class="screen">
-        <h1 id="final-header">a little note for you</h1>
-        
-        <div id="apology-container" class="note-container">
-            <img src="sad1.gif" alt="sad cute gif">
-            
-            <p class="special-line">my dear didu 🫀 i am your naughty kid 🎀🎀</p>
-            
-            <p class="note-text">
-                i am genuinely sorry. i know whatever you said was for my own good. i promise this won't happen again and i will listen to your advice.<br><br>
-                please let go of your anger now. your bachha wants to see you smile. i love you the most! 🥺💖
-            </p>
-        </div>
-        
-        <button id="forgive-btn" class="btn" onclick="showFinalMessage()">forgive me 💖</button>
-
-
-        <div id="final-success-msg">
-            <div style="font-size: 4rem; margin-bottom: 10px;">😭❤️🎀</div>
-            <p class="special-line" style="font-size: 1.5rem;">thank you didu!</p>
-            <p class="note-text" style="text-align: center;">
-                you are the best sister and mother figure in the whole world. <br><br>
-                i love you infinity! <br>
-                forever your badmash bachha 🎀
-            </p>
-        </div>
-
-    </div>
+    <audio id="bgMusic" src="tere-liye.mp3"></audio>
 
     <script>
-        let musicPlayed = false;
+        const drawBtn = document.getElementById('drawBtn');
+        const greeting = document.getElementById('greeting');
+        const drawingArea = document.getElementById('drawingArea');
+        const photo = document.getElementById('photo');
+        const bgMusic = document.getElementById('bgMusic');
+        const container = document.getElementById('container');
 
-        // Function to start music on first interaction
-        function playMusic() {
-            if (!musicPlayed) {
-                let music = document.getElementById("bg-music");
-                // Set volume slightly lower so it's background music
-                music.volume = 0.6; 
-                music.play().catch(error => {
-                    console.log("Autoplay prevented by browser, will play on next click");
-                });
-                musicPlayed = true;
-            }
-        }
-
-        // Standard function to switch between screens
-        function nextScreen(hideId, showId) {
-            document.getElementById(hideId).classList.remove('active');
-            document.getElementById(showId).classList.add('active');
-        }
-
-        // Special transition from Screen 1 to 2 with animation
-        function goToScreen2() {
-            playMusic();
-            nextScreen('screen1', 'screen2');
+        drawBtn.addEventListener('click', () => {
+            // Gaana play karein
+            bgMusic.play().catch(error => {
+                console.log("Audio play hone me issue hua, please check if tere-liye.mp3 exists.");
+            });
             
-            // Start animation after a short delay for smooth transition
-            setTimeout(() => {
-                // Animate the bar width
-                document.getElementById("progress-fill").style.width = "100%";
-                
-                // Animate the numbers counting up
-                let count = 0;
-                let interval = setInterval(() => {
-                    // Count up faster as it gets higher
-                    count += Math.floor(Math.random() * 5) + 2; 
-                    if(count > 120) count = 120; // Cap at 120% like screenshot
-
-                    document.getElementById("percentage").innerText = count + "%";
-                    
-                    if (count >= 120) {
-                        clearInterval(interval);
-                        // Show the continue button
-                        let btn = document.getElementById("btn-continue");
-                        btn.style.display = "block";
-                        setTimeout(() => { btn.style.opacity = 1; }, 100);
-                    }
-                }, 60);
-            }, 300);
-        }
-
-        // Function to handle reveal boxes on Screen 3
-        function revealText(element) {
-            let text = element.querySelector('.reveal-text');
-            let icon = element.querySelector('.heart-icon');
+            // Text aur button ko gayab karein
+            container.style.display = 'none';
             
-            // Only reveal if not already revealed
-            if (text.style.display !== "block") {
-                text.style.display = "block";
-                // Change white heart icon to a different one to show it's clicked
-                icon.innerHTML = "💖"; 
-                icon.style.animation = "none"; // Stop pulsing once clicked
-            }
-        }
-
-        // Changes Screen 4 from Apology Note to Final Emotional Note
-        function showFinalMessage() {
-            // Hide the apology container and the button
-            document.getElementById('apology-container').style.display = 'none';
-            document.getElementById('forgive-btn').style.display = 'none';
-            document.getElementById('final-header').style.display = 'none';
-
-            // Show the final success message
-            document.getElementById('final-success-msg').style.display = 'block';
+            // Canvas (Drawing area) show karein
+            drawingArea.style.display = 'block';
             
-            // Optional: change the music or play a cheer sound here if you wanted
-        }
+            // Photo par animation class laga dein jisse drawing effect aaye
+            photo.classList.add('live-draw');
+        });
     </script>
 </body>
 </html>
