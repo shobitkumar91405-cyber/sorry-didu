@@ -408,7 +408,7 @@ function initCake() {
 // page 5 balloons simple
 function initCelebration() {
   const d = new Date(); d.setDate(d.getDate()+1);
-  document.getElementById('tomorrow').textContent = 
+  document.getElementById('today').textContent = 
     `celebrating on: ${d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}).toLowerCase()}`;
 
   const cont = document.getElementById('balloons');
