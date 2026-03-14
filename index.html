@@ -27,6 +27,18 @@
             text-align: center;
         }
 
+        /* Top Handle Style */
+        .top-handle {
+            position: absolute;
+            top: 15px;
+            width: 100%;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.7); /* Dark text */
+            z-index: 100;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
         .page {
             position: absolute;
             inset: 0;
@@ -84,9 +96,11 @@
             cursor: pointer;
             font-weight: 600;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 20;
         }
 
-        /* Particles - Very few to stop lag */
+        /* Background & Balloon Styles */
         #bg-container {
             position: absolute;
             inset: 0;
@@ -94,21 +108,39 @@
             z-index: 1;
         }
 
-        .particle {
+        .balloon {
             position: absolute;
-            bottom: -50px;
-            animation: floatUp linear infinite;
-            opacity: 0.3;
+            bottom: -150px;
+            width: 70px;
+            height: 85px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            animation: floatBalloon linear infinite;
         }
 
-        @keyframes floatUp {
-            from { transform: translateY(0); opacity: 0; }
-            50% { opacity: 0.3; }
-            to { transform: translateY(-110vh); opacity: 0; }
+        .balloon::after {
+            content: "↓";
+            position: absolute;
+            bottom: -15px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(15deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
+
+    <div class="top-handle">follow - @smss1708 🌺</div>
 
     <audio id="bg-music" loop>
         <source src="tere-liye.mp3" type="audio/mpeg">
@@ -118,7 +150,7 @@
 
     <div class="page active" id="page-1">
         <h1>Hi Shathi! ✨</h1>
-        <p>I am sivasingh🥀 and I made a website for you ...</p>
+        <p>I am sivasingh🥀 and I made a little website for you...</p>
         <button class="btn" onclick="nextPage(1)">Click Here</button>
     </div>
 
@@ -143,14 +175,13 @@
             <img src="flower3.gif" alt="Flower 3">
         </div>
         <h1>Keep Smiling! 😊</h1>
-        <p>Glad we became friends. Have a great day!</p>
+        <p>Glad we became friends. Have a great day !</p>
     </div>
 
     <script>
         const bgMusic = document.getElementById('bg-music');
 
         function nextPage(current) {
-            // Music plays on first click
             if (current === 1) {
                 bgMusic.play().catch(() => console.log("Music interaction required"));
             }
@@ -158,26 +189,41 @@
             document.getElementById(`page-${current}`).classList.remove('active');
             const next = document.getElementById(`page-${current + 1}`);
             if (next) {
-                // Short delay for smoothness
                 setTimeout(() => next.classList.add('active'), 100);
             }
         }
 
-        function createParticles() {
+        function createElements() {
             const container = document.getElementById('bg-container');
-            const items = ['✨', '🌸', '⭐'];
-            // Fixed number of particles to ensure NO LAG
-            for (let i = 0; i < 12; i++) {
-                let p = document.createElement('div');
-                p.className = 'particle';
-                p.innerText = items[Math.floor(Math.random() * items.length)];
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                p.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(p);
+            const colors = ['#ff69b4', '#ffeb3b', '#03a9f4', '#8bc34a', '#ff5722'];
+            
+            // Create Balloons with "sathi" text
+            for (let i = 0; i < 8; i++) {
+                let b = document.createElement('div');
+                b.className = 'balloon';
+                b.innerText = 'sathi';
+                b.style.left = Math.random() * 90 + 'vw';
+                b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                b.style.animationDuration = (Math.random() * 5 + 7) + 's';
+                b.style.animationDelay = Math.random() * 8 + 's';
+                container.appendChild(b);
+            }
+
+            // Keep some sparkles for magic
+            const sparkles = ['✨', '⭐'];
+            for (let i = 0; i < 6; i++) {
+                let s = document.createElement('div');
+                s.style.position = 'absolute';
+                s.style.bottom = '-50px';
+                s.style.left = Math.random() * 100 + 'vw';
+                s.innerText = sparkles[Math.floor(Math.random() * sparkles.length)];
+                s.style.animation = `floatBalloon ${Math.random() * 3 + 5}s linear infinite`;
+                s.style.opacity = '0.4';
+                container.appendChild(s);
             }
         }
-        window.onload = createParticles;
+        
+        window.onload = createElements;
     </script>
 </body>
 </html>
